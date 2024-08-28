@@ -20,7 +20,7 @@
       </div>
       <div class="p-field">
         <label for="jobTitleId">Job Title</label>
-        <input id="jobTitleId" type="number" pInputText formControlName="jobTitleId" />
+        <p-dropdown [options]="jobTitles" formControlName="jobTitleId" placeholder="Select a Job Title"></p-dropdown>
       </div>
       <div class="p-field">
         <label for="dateOfBirth">Date of Birth</label>

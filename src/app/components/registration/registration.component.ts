@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { JobTitleService } from '../../services/job-title.service';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
@@ -9,8 +10,9 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class RegistrationComponent {
   registrationForm: FormGroup;
+  jobTitles: any[] = [];
 
-  constructor(private fb: FormBuilder, private authService: AuthenticationService) {
+  constructor(private fb: FormBuilder, private jobTitleService: JobTitleService, private authService: AuthenticationService) {
     this.registrationForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -20,6 +22,17 @@ export class RegistrationComponent {
       dateOfBirth: ['']
     });
   }
+
+  ngOnInit(): void {
+    this.jobTitleService.getJobTitles().subscribe(response => {
+      if (response.success) {
+        this.jobTitles = response.data.map((title: string, index: number) => ({
+          label: title,
+          value: index + 1 // ID'si 1'den başlayan bir liste kullanıyoruz
+        }));
+      }
+    });
+  } 
 
   onSubmit() {
     if (this.registrationForm.valid) {
