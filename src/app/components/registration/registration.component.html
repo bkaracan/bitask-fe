@@ -30,3 +30,14 @@
     </form>
   </div>
 </div>
+
+<p-dialog header="Registration Successful" [(visible)]="displayModal" [modal]="true" [closable]="false" class="activation-dialog">
+  <p class="message">Your registration was successful. A 6-digit code has been sent to your email address. Please enter the code below to activate your account.</p>
+  <div class="p-field">
+    <label for="activationCode">Activation Code</label>
+    <input id="activationCode" type="password" pInputText [(ngModel)]="activationCode" maxlength="6"/>
+  </div>
+  <div class="dialog-actions">
+    <button pButton type="button" label="Activate my account" (click)="activateAccount()"></button>
+  </div>
+</p-dialog>

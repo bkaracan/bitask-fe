@@ -21,8 +21,7 @@ export class AuthenticationService {
   }
 
   activateAccount(token: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/activate-account`, {
-      params: { token },
-    });
+    return this.http.get<any>(`${this.apiUrl}/activate-account?token=${token}`);
+    
+    }
   }
-}

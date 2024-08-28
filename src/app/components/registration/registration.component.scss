@@ -56,4 +56,34 @@
       }
     }
   }
+
+  .activation-dialog {
+    .message {
+      margin-bottom: 1.5rem;  // Mesaj ile kod alanı arasındaki boşluğu artırdık
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  
+    .p-field {
+      margin-bottom: 1.5rem;
+      
+      label {
+        margin-bottom: 0.25rem; // Label ile input arasındaki boşluk
+        display: block;
+        font-weight: bold;
+      }
+  
+      input {
+        padding: 0.5rem;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+      }
+    }
+  
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  
   

@@ -11,6 +11,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class RegistrationComponent {
   registrationForm: FormGroup;
   jobTitles: any[] = [];
+  displayModal: boolean = false;
+  activationCode: string = '';
 
   constructor(private fb: FormBuilder, private jobTitleService: JobTitleService, private authService: AuthenticationService) {
     this.registrationForm = this.fb.group({
@@ -39,11 +41,24 @@ export class RegistrationComponent {
       this.authService.register(this.registrationForm.value).subscribe(
         response => {
           console.log('Registration successful', response);
+          this.displayModal = true;
         },
         error => {
           console.error('Registration failed', error);
         }
       );
     }
+  }
+
+  activateAccount() {
+    this.authService.activateAccount(this.activationCode).subscribe(
+      response => {
+        console.log('Account activated successfully', response);
+        this.displayModal = false;
+      },
+      error => {
+        console.error('Account activation failed', error);
+      }
+    );
   }
 }
