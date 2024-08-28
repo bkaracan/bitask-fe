@@ -1,0 +1,48 @@
+.homepage-container {
+    text-align: center;
+    margin-top: 100px;
+  
+    h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 10px; /* Slogan daha yakın olsun diye azaltıldı */
+    }
+  
+    .slogan {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 30px; /* Buton biraz daha yukarı taşındı */
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+  
+      #cursor {
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: black;
+        animation: blink 0.7s infinite;
+      }
+    }
+  
+    button {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      opacity: 0; /* Başlangıçta görünmez yap */
+      transition: opacity 2s ease-in; /* Yavaşça belirme efekti */
+      display: block;
+      margin: 0 auto; /* Butonu ortalar */
+    }
+  
+    .button-visible {
+      opacity: 1; /* Butonu görünür yap */
+    }
+  }
+  
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
