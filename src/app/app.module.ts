@@ -11,6 +11,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -22,13 +25,15 @@ import { DropdownModule } from 'primeng/dropdown';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,  
+    ReactiveFormsModule,
+    FormsModule,  
     HttpClientModule,
     BrowserAnimationsModule,
     CalendarModule, 
     ButtonModule,  
     InputTextModule,
-    DropdownModule
+    DropdownModule,
+    DialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
