@@ -10,6 +10,8 @@ import { ButtonModule } from 'primeng/button';  // PrimeNG Button modülünü im
 import { InputTextModule } from 'primeng/inputtext';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 @NgModule({
   declarations: [
@@ -20,12 +22,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,  // ReactiveFormsModule'u buraya ekleyin
+    ReactiveFormsModule,  
     HttpClientModule,
     BrowserAnimationsModule,
-    CalendarModule,  // PrimeNG Calendar modülünü buraya ekleyin
-    ButtonModule,  // PrimeNG Button modülünü buraya ekleyin
-    InputTextModule  // PrimeNG Input modülünü buraya ekleyin
+    CalendarModule, 
+    ButtonModule,  
+    InputTextModule,
+    DropdownModule
   ],
   providers: [],
   bootstrap: [AppComponent]
