@@ -12,6 +12,8 @@ export class RegistrationComponent {
   registrationForm: FormGroup;
   jobTitles: any[] = [];
   displayModal: boolean = false;
+  isInvalidCode: boolean = false;
+  successModal: boolean = false;
   activationCode: string = '';
 
   constructor(private fb: FormBuilder, private jobTitleService: JobTitleService, private authService: AuthenticationService) {
@@ -30,7 +32,7 @@ export class RegistrationComponent {
       if (response.success) {
         this.jobTitles = response.data.map((title: string, index: number) => ({
           label: title,
-          value: index + 1 // ID'si 1'den başlayan bir liste kullanıyoruz
+          value: index + 1
         }));
       }
     });
@@ -38,7 +40,14 @@ export class RegistrationComponent {
 
   onSubmit() {
     if (this.registrationForm.valid) {
-      this.authService.register(this.registrationForm.value).subscribe(
+      const formData = { ...this.registrationForm.value };
+
+      if (formData.dateOfBirth) {
+        const date = new Date(formData.dateOfBirth);
+        formData.dateOfBirth = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      }
+
+      this.authService.register(formData).subscribe(
         response => {
           console.log('Registration successful', response);
           this.displayModal = true;
@@ -53,12 +62,25 @@ export class RegistrationComponent {
   activateAccount() {
     this.authService.activateAccount(this.activationCode).subscribe(
       response => {
-        console.log('Account activated successfully', response);
-        this.displayModal = false;
+        if (response.success) {
+          console.log('Account activated successfully', response);
+          this.displayModal = false;
+          this.isInvalidCode = false;
+          this.successModal = true; // Başarı pop-up'ını göster
+        } else {
+          this.isInvalidCode = true;
+        }
       },
       error => {
         console.error('Account activation failed', error);
+        this.isInvalidCode = true; // Yanlış kod girildiğinde hata mesajını ve kırmızı çerçeveyi göster
       }
     );
   }
+
+  closeSuccessModal() {
+    this.successModal = false;
+  }
+  
+  
 }
