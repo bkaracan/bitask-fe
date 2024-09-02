@@ -31,13 +31,30 @@
   </div>
 </div>
 
-<p-dialog header="Registration Successful" [(visible)]="displayModal" [modal]="true" [closable]="false" class="activation-dialog">
+<!-- Kayıt Başarılı Pop-up -->
+<p-dialog header="Registration Successful" [(visible)]="displayModal" [modal]="true" [closable]="true" class="activation-dialog">
   <p class="message">Your registration was successful. A 6-digit code has been sent to your email address. Please enter the code below to activate your account.</p>
   <div class="p-field">
     <label for="activationCode">Activation Code</label>
-    <input id="activationCode" type="password" pInputText [(ngModel)]="activationCode" maxlength="6"/>
+    <input id="activationCode" type="password" pInputText [(ngModel)]="activationCode" maxlength="6" 
+    [ngClass]="{'error-border': isInvalidCode}" />
+    <div *ngIf="isInvalidCode" class="error-message">The code you entered is incorrect. Please try again.</div>
   </div>
   <div class="dialog-actions">
     <button pButton type="button" label="Activate my account" (click)="activateAccount()"></button>
   </div>
 </p-dialog>
+
+<!-- Hesap Aktifleştirildi Pop-up -->
+<p-dialog [(visible)]="successModal" [modal]="true" [closable]="false" class="success-dialog">
+  <div class="success-content">
+    <div class="success-icon">
+      <i class="pi pi-check"></i>
+    </div>
+    <p class="success-message">Account activated successfully!</p>
+  </div>
+  <div class="dialog-actions">
+    <button pButton type="button" label="Go to login page" (click)="closeSuccessModal()"></button>
+  </div>
+</p-dialog>
+
