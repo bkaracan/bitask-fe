@@ -1,0 +1,22 @@
+<div class="login-container">
+    <div class="login-card">
+      <h2>Welcome to BiTASK</h2>
+      <p>Sign into your account</p>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="p-field" [ngClass]="{'error': isLoginFailed}">
+          <label for="email">Email</label>
+          <input id="email" type="email" pInputText formControlName="email" />
+        </div>
+        <div class="p-field" [ngClass]="{'error': isLoginFailed}">
+          <label for="password">Password</label>
+          <input id="password" type="password" pInputText formControlName="password" />
+        </div>
+        <div *ngIf="isLoginFailed" class="error-message">
+          {{ errorMessage }}
+        </div>
+        <button pButton type="submit" label="Login"></button>
+        <p class="forgot-password"><a href="#">Forgot password?</a></p>
+      </form>
+    </div>
+  </div>
+  
