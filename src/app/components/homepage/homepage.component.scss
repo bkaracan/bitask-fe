@@ -1,46 +1,54 @@
 .homepage-container {
   text-align: center;
-  margin-top: 100px;
+  background-color: #1B262C;
+  height: 100vh; /* Sayfanın tamamını kapla */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* İçeriği ortala */
+  align-items: center; /* İçeriği ortala */
+}
 
-  h1 {
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+h1 {
+  font-size: 6rem; /* Yazı boyutunu büyüttük */
+  font-weight: bold;
+  color: #ffffff; /* Yazı rengini beyaz yaptık */
+  margin-bottom: 20px;
+}
 
-  .slogan {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 30px; 
-    background: linear-gradient(to right, #00c6ff, #0072ff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
+.slogan {
+  font-size: 2rem; /* Slogan boyutunu büyüttük */
+  font-weight: bold;
+  margin-bottom: 50px; /* Butonlar ile slogan arasındaki boşluğu artırdık */
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
 
-    #cursor {
-      font-weight: bold;
-      font-size: 1.5rem;
-      color: black;
-      animation: blink 0.7s infinite;
-    }
-  }
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 2s ease-in;
+  margin-top: 20px;
+}
 
-  .buttons-container {
-    display: flex;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 2s ease-in;
-    margin-top: 20px; /* Butonları sloganın altına yerleştirmek için margin-top ekledik */
-  }
+.button-visible {
+  opacity: 1;
+}
 
-  .button-visible {
-    opacity: 1;
-  }
+button {
+  font-size: 1.5rem; /* Buton boyutunu büyüttük */
+  padding: 15px 30px; /* Butonun içindeki boşlukları artırdık */
+  margin: 0 20px; /* Butonlar arasındaki boşluğu artırdık */
+  background-color: #007bff; /* Buton rengini belirledik */
+  border-color: #007bff;
+  color: #ffffff;
+  border-radius: 8px;
+}
 
-  button {
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    margin: 0 10px; 
-  }
+button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
