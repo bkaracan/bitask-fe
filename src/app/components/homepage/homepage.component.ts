@@ -18,6 +18,10 @@ export class HomepageComponent implements OnInit {
     this.router.navigate(['/registration']);
   }
 
+  navigateToLogin() {
+    this.router.navigate(['/login']); // Login sayfasına yönlendirme yapar
+  }
+
   typeEffect() {
     const text = "Fast, planned and organized.";
     const typedTextElement = document.getElementById('typed-text');
@@ -31,9 +35,9 @@ export class HomepageComponent implements OnInit {
         setTimeout(typeCharacter, 100);
       } else {
         cursorElement!.style.display = 'none';
-        // Butonu görünür yap
-        const buttonElement = document.querySelector('button');
-        buttonElement!.classList.add('button-visible');
+        // Butonları görünür yap
+        const buttonsContainerElement = document.getElementById('buttons-container');
+        buttonsContainerElement!.classList.add('button-visible');
       }
     }
 
