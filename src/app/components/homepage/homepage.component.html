@@ -1,8 +1,10 @@
 <div class="homepage-container">
-    <h1>BiTASK</h1>
-    <p class="slogan">
-      <span id="typed-text"></span><span id="cursor">|</span>
-    </p>
-    <button pButton label="Sign Up" icon="pi pi-user-plus" (click)="navigateToRegistration()"></button>
+  <h1>BiTASK</h1>
+  <p class="slogan">
+    <span id="typed-text"></span><span id="cursor">|</span>
+  </p>
+  <div class="buttons-container" id="buttons-container">
+    <button id="signup-button" pButton label="Sign Up" icon="pi pi-user-plus" (click)="navigateToRegistration()"></button>
+    <button id="login-button" pButton label="Login" icon="pi pi-sign-in" (click)="navigateToLogin()"></button>
   </div>
-  
+</div>
