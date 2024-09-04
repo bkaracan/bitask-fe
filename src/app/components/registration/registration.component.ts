@@ -16,6 +16,14 @@ export class RegistrationComponent {
   isInvalidCode: boolean = false;
   activationCode: string = '';
   successModal: boolean = false;
+  showPasswordPopup: boolean = false;
+
+  // Şifre validasyonu için kontroller
+  passwordValidations = {
+    hasMinLength: false,
+    hasUppercase: false,
+    hasSpecialChar: false
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +35,7 @@ export class RegistrationComponent {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', Validators.required],
       jobTitleId: [null, Validators.required],
       dateOfBirth: ['']
     });
@@ -42,10 +50,26 @@ export class RegistrationComponent {
         }));
       }
     });
+
+    // Şifre alanı her değiştiğinde kontrol işlemi yapılacak
+    this.registrationForm.get('password')!.valueChanges.subscribe(value => {
+      this.checkPasswordStrength(value);
+    });
+  }
+
+  // Şifre validasyonları
+  checkPasswordStrength(password: string) {
+    this.passwordValidations.hasMinLength = password.length >= 8;
+    this.passwordValidations.hasUppercase = /[A-Z]/.test(password);
+    this.passwordValidations.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  }
+
+  isPasswordValid(): boolean {
+    return this.passwordValidations.hasMinLength && this.passwordValidations.hasUppercase && this.passwordValidations.hasSpecialChar;
   }
 
   onSubmit() {
-    if (this.registrationForm.valid) {
+    if (this.registrationForm.valid && this.isPasswordValid()) {
       const formData = { ...this.registrationForm.value };
 
       if (formData.dateOfBirth) {

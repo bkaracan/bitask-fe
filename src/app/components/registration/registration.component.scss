@@ -57,6 +57,34 @@ button:hover {
   border-color: #0056b3;
 }
 
+/* Şifre gereksinimleri pop-up'ı */
+.password-popup {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+
+  p {
+    margin: 0.5rem 0;
+  }
+
+  .valid {
+    color: #28a745; /* Şifre kriterleri sağlandığında yeşil */
+  }
+
+  .invalid {
+    color: red; /* Şifre kriterleri sağlanmadığında kırmızı */
+  }
+
+  i {
+    margin-right: 5px;
+  }
+}
+
+/* Aktivasyon dialog stilleri */
 .activation-dialog .message {
   margin-bottom: 1.5rem;
   font-size: 1rem;
@@ -97,6 +125,7 @@ button:hover {
   justify-content: flex-end;
 }
 
+/* Hesap başarıyla aktifleştirildiğinde kullanılan dialog */
 .success-dialog .success-content {
   display: flex;
   flex-direction: column;

@@ -16,8 +16,25 @@
       </div>
       <div class="p-field">
         <label for="password">Password</label>
-        <input id="password" type="password" pInputText formControlName="password" />
+        <input id="password" type="password" pInputText formControlName="password" (focus)="showPasswordPopup = true" (input)="checkPasswordStrength(registrationForm.get('password')?.value)" />
       </div>
+
+      <!-- Şifre kriterleri için pop-up -->
+      <div class="password-popup" *ngIf="showPasswordPopup">
+        <p [ngClass]="{ 'valid': passwordValidations.hasMinLength, 'invalid': !passwordValidations.hasMinLength }">
+          <i *ngIf="passwordValidations.hasMinLength" class="pi pi-check"></i>
+          Must be at least 8 characters
+        </p>
+        <p [ngClass]="{ 'valid': passwordValidations.hasUppercase, 'invalid': !passwordValidations.hasUppercase }">
+          <i *ngIf="passwordValidations.hasUppercase" class="pi pi-check"></i>
+          Must contain at least one uppercase letter
+        </p>
+        <p [ngClass]="{ 'valid': passwordValidations.hasSpecialChar, 'invalid': !passwordValidations.hasSpecialChar }">
+          <i *ngIf="passwordValidations.hasSpecialChar" class="pi pi-check"></i>
+          Must contain at least one special character
+        </p>
+      </div>
+
       <div class="p-field">
         <label for="jobTitleId">Job Title</label>
         <p-dropdown [options]="jobTitles" formControlName="jobTitleId" placeholder="Select a Job Title"></p-dropdown>
@@ -26,7 +43,7 @@
         <label for="dateOfBirth">Date of Birth</label>
         <p-calendar id="dateOfBirth" formControlName="dateOfBirth" [showIcon]="true"></p-calendar>
       </div>
-      <button pButton type="submit" label="Register"></button>
+      <button pButton type="submit" label="Register" [disabled]="!isPasswordValid()" [ngClass]="{ 'disabled-btn': !isPasswordValid(), 'enabled-btn': isPasswordValid() }"></button>
     </form>
   </div>
 </div>
@@ -57,4 +74,3 @@
     <button pButton type="button" label="Go to login page" (click)="closeSuccessModal()"></button>
   </div>
 </p-dialog>
-
