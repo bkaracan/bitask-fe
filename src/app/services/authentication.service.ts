@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegistrationRequestDTO } from '../models/registration-request.dto';
 import { AuthenticationRequestDTO } from '../models/authentication-request.dto';
+import { PasswordResetRequestDTO } from '../models/password-reset-request.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -24,4 +25,13 @@ export class AuthenticationService {
     return this.http.get<any>(`${this.apiUrl}/activate-account?token=${token}`);
     
     }
+
+    sendResetPasswordCode(email: string): Observable<any> {
+      return this.http.post(`${this.apiUrl}/forgot-password?email=${email}`, null);
+    }
+
+    resetPassword(token: string, request: PasswordResetRequestDTO): Observable<any> {
+      return this.http.post(`${this.apiUrl}/reset-password?token=${token}`, request);
+    }
+    
   }

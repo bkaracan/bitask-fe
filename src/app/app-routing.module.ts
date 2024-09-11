@@ -4,12 +4,14 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component'; // Login component import edildi
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'login', component: LoginComponent }, // Login component route'u eklendi
   { path: 'dashboard', component: DashboardComponent },  // Burada DashboardComponent rotası tanımlandı
+  { path: 'reset-password', component: ResetPasswordComponent}
 ];
 
 @NgModule({
