@@ -1,22 +1,48 @@
 <div class="login-container">
-    <div class="login-card">
-      <h2>Welcome to BiTASK</h2>
-      <p>Sign into your account</p>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="p-field" [ngClass]="{'error': isLoginFailed}">
-          <label for="email">Email</label>
-          <input id="email" type="email" pInputText formControlName="email" />
-        </div>
-        <div class="p-field" [ngClass]="{'error': isLoginFailed}">
-          <label for="password">Password</label>
-          <input id="password" type="password" pInputText formControlName="password" />
-        </div>
-        <div *ngIf="isLoginFailed" class="error-message">
-          {{ errorMessage }}
-        </div>
-        <button pButton type="submit" label="Login"></button>
-        <p class="forgot-password"><a href="#">Forgot password?</a></p>
-      </form>
-    </div>
+  <div class="login-card">
+    <h2>Welcome to BiTASK</h2>
+    <p>Sign into your account</p>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="p-field" [ngClass]="{'error': isLoginFailed}">
+        <label for="email">Email</label>
+        <input id="email" type="email" pInputText formControlName="email" />
+      </div>
+      <div class="p-field" [ngClass]="{'error': isLoginFailed}">
+        <label for="password">Password</label>
+        <input id="password" type="password" pInputText formControlName="password" />
+      </div>
+      <div *ngIf="isLoginFailed" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button pButton type="submit" label="Login"></button>
+      <p class="forgot-password"><a href="#" (click)="openForgotPasswordPopup($event)">Forgot password?</a></p>
+    </form>
   </div>
-  
+
+  <!-- Forgot Password Popup -->
+  <p-dialog header="Reset Password Code" [(visible)]="showForgotPasswordPopup" [modal]="true" [closable]="true">
+    <p>Enter your email address to receive a password reset code.</p>
+    <input id="emailForReset" type="email" [(ngModel)]="emailForReset" pInputText placeholder="Enter your email address" />
+    <div class="dialog-actions">
+      <button pButton type="button" label="Send Reset Code" (click)="sendResetCode()"></button>
+    </div>
+    <div *ngIf="codeSent" class="success-message">
+      <i class="pi pi-check-circle"></i> A password reset code has been sent to your email.
+    </div>
+
+    <!-- Code Verification Pop-up -->
+    <div *ngIf="showCodeVerification">
+      <p>Enter the 6-digit code sent to your email:</p>
+      <input id="resetCode" type="text" [(ngModel)]="resetCode" pInputText placeholder="Enter your reset code" />
+      <div class="dialog-actions">
+        <button pButton type="button" label="Verify Code" (click)="verifyCode()"></button>
+      </div>
+      <div *ngIf="isCodeIncorrect" class="error-message">
+        <i class="pi pi-times-circle"></i> Incorrect reset code. Please try again.
+      </div>
+      <div *ngIf="isCodeCorrect" class="success-message">
+        <i class="pi pi-check-circle"></i> Code verified! Redirecting to set a new password...
+      </div>
+    </div>
+  </p-dialog>
+</div>

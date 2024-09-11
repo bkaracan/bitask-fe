@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
-import { AuthenticationRequestDTO } from '../../models/authentication-request.dto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +11,15 @@ import { AuthenticationRequestDTO } from '../../models/authentication-request.dt
 export class LoginComponent {
   loginForm: FormGroup;
   isLoginFailed: boolean = false;
-  errorMessage: string = ''; // Hata mesajı için değişken
+  errorMessage: string = '';
+  emailForReset: string = '';
+  resetCode: string = '';
+  showForgotPasswordPopup: boolean = false;
+  codeSent: boolean = false;
+  showCodeVerification: boolean = false;
+  isCodeIncorrect: boolean = false;
+  isCodeCorrect: boolean = false;
+  passwordResetSuccessMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -25,32 +32,56 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.loginForm.valid) {
-      const formData: AuthenticationRequestDTO = this.loginForm.value;
-  
+      const formData = this.loginForm.value;
+
       this.authService.authenticate(formData).subscribe(
-        response => {
-          console.log('Login successful', response);
+        (response: any) => {
           if (response.success) {
-            this.router.navigate(['/dashboard']); // Giriş başarılı olursa yönlendirme yap
+            // Başarılı giriş
           } else {
             this.isLoginFailed = true;
-            this.errorMessage = response.message || 'An unexpected error occurred. Please try again.';
+            this.errorMessage = response.message || 'An unexpected error occurred.';
           }
         },
-        error => {
-          console.error('Login failed', error);
-          if (error.status === 401) {
-            this.isLoginFailed = true;
-            this.errorMessage = 'Your email address or password is incorrect.';
-          } else {
-            this.errorMessage = 'An unexpected error occurred. Please try again.';
-          }
+        (error: any) => {
+          this.isLoginFailed = true;
+          this.errorMessage = 'Your email or password is incorrect.';
         }
       );
     }
   }
-  
-  
+
+  // Reset kodu göndermek için kullanılacak metod
+  sendResetCode(): void {
+    if (this.emailForReset) {
+      this.authService.sendResetPasswordCode(this.emailForReset).subscribe(
+        (response: any) => {
+          this.codeSent = true;
+          this.showCodeVerification = true;
+        },
+        (error: any) => {
+          this.passwordResetSuccessMessage = 'Failed to send password reset code. Please try again.';
+        }
+      );
+    }
+  }
+
+  // Kullanıcıdan gelen kodu doğrulama işlemi
+  verifyCode(): void {
+    if (this.resetCode === 'expectedCode') { // Backend'den gelen doğru kodla karşılaştırma yapılmalı
+      this.isCodeCorrect = true;
+      setTimeout(() => {
+        this.router.navigate(['/reset-password']); // Yeni şifre belirleme ekranına yönlendir
+      }, 2000); // 2 saniye sonra yönlendirme
+    } else {
+      this.isCodeIncorrect = true;
+    }
+  }
+
+  openForgotPasswordPopup(event: Event): void {
+    event.preventDefault();
+    this.showForgotPasswordPopup = true;
+  }
 }

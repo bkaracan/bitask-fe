@@ -15,6 +15,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 
 
@@ -24,7 +25,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     RegistrationComponent,
     HomepageComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
