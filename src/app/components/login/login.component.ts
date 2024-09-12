@@ -35,11 +35,12 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
-
+  
       this.authService.authenticate(formData).subscribe(
         (response: any) => {
           if (response.success) {
             // Başarılı giriş
+            this.router.navigate(['/dashboard']);  // Dashboard sayfasına yönlendirme
           } else {
             this.isLoginFailed = true;
             this.errorMessage = response.message || 'An unexpected error occurred.';
@@ -52,6 +53,7 @@ export class LoginComponent {
       );
     }
   }
+  
 
   // Reset kodu göndermek için kullanılacak metod
   sendResetCode(): void {
@@ -90,9 +92,6 @@ export class LoginComponent {
       }
     );
 }
-
-
-
 
   openForgotPasswordPopup(event: Event): void {
     event.preventDefault();
