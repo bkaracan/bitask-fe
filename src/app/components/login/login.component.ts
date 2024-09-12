@@ -59,7 +59,7 @@ export class LoginComponent {
       this.authService.sendResetPasswordCode(this.emailForReset).subscribe(
         (response: any) => {
           this.codeSent = true;
-          this.showCodeVerification = true;
+          this.showCodeVerification = true; // Şifre sıfırlama kodu alanını göster
         },
         (error: any) => {
           this.passwordResetSuccessMessage = 'Failed to send password reset code. Please try again.';
@@ -70,15 +70,29 @@ export class LoginComponent {
 
   // Kullanıcıdan gelen kodu doğrulama işlemi
   verifyCode(): void {
-    if (this.resetCode === 'expectedCode') { // Backend'den gelen doğru kodla karşılaştırma yapılmalı
-      this.isCodeCorrect = true;
-      setTimeout(() => {
-        this.router.navigate(['/reset-password']); // Yeni şifre belirleme ekranına yönlendir
-      }, 2000); // 2 saniye sonra yönlendirme
-    } else {
-      this.isCodeIncorrect = true;
-    }
-  }
+    this.authService.verifyResetCode(this.emailForReset, this.resetCode).subscribe(
+      (response: any) => {
+        console.log(response);  // Response'u görmek için log ekledik
+        // success alanını kontrol ediyoruz
+        if (response.success) {  // Backend'den success true dönüyor mu?
+          this.isCodeCorrect = true;
+          setTimeout(() => {
+            this.router.navigate(['/reset-password']); // Şifre sıfırlama ekranına yönlendir
+          }, 2000); // 2 saniye sonra yönlendirme
+        } else {
+          this.isCodeIncorrect = true;
+          console.error("Incorrect reset code");
+        }
+      },
+      (error: any) => {
+        this.isCodeIncorrect = true;
+        console.error("Reset code verification failed", error);
+      }
+    );
+}
+
+
+
 
   openForgotPasswordPopup(event: Event): void {
     event.preventDefault();

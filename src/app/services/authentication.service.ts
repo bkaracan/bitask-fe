@@ -33,5 +33,11 @@ export class AuthenticationService {
     resetPassword(token: string, request: PasswordResetRequestDTO): Observable<any> {
       return this.http.post(`${this.apiUrl}/reset-password?token=${token}`, request);
     }
+
+    verifyResetCode(email: string, resetCode: string): Observable<any> {
+      return this.http.post(`${this.apiUrl}/forgot-password`, null, {
+        params: { email, resetCode }
+      });
+  }
     
   }
