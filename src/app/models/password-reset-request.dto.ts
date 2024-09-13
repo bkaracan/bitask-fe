@@ -1,3 +1,3 @@
 export class PasswordResetRequestDTO {
-    constructor(public newPassword: string) {}
-  }
+  constructor(public email: string, public newPassword: string) {}
+}
