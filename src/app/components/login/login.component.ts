@@ -74,24 +74,31 @@ export class LoginComponent {
   verifyCode(): void {
     this.authService.verifyResetCode(this.emailForReset, this.resetCode).subscribe(
       (response: any) => {
-        console.log(response);  // Response'u görmek için log ekledik
-        // success alanını kontrol ediyoruz
-        if (response.success) {  // Backend'den success true dönüyor mu?
+        console.log('Backend yanıtı:', response);
+        if (response.success) {
           this.isCodeCorrect = true;
+          this.isCodeIncorrect = false;
+          this.errorMessage = ''; // Önceki hata mesajını temizleyin
           setTimeout(() => {
-            this.router.navigate(['/reset-password']); // Şifre sıfırlama ekranına yönlendir
-          }, 2000); // 2 saniye sonra yönlendirme
+            this.router.navigate(['/reset-password']);
+          }, 2000);
         } else {
           this.isCodeIncorrect = true;
-          console.error("Incorrect reset code");
+          this.isCodeCorrect = false;
+          this.errorMessage = response.message || 'Incorrect reset code. Please try again.';
         }
       },
       (error: any) => {
         this.isCodeIncorrect = true;
-        console.error("Reset code verification failed", error);
+        this.isCodeCorrect = false;
+        this.errorMessage = 'Reset code verification failed. Please try again.';
+        console.error('Reset code verification failed', error);
       }
     );
-}
+  }
+  
+  
+  
 
   openForgotPasswordPopup(event: Event): void {
     event.preventDefault();

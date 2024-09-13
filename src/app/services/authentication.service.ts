@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { RegistrationRequestDTO } from '../models/registration-request.dto';
 import { AuthenticationRequestDTO } from '../models/authentication-request.dto';
 import { PasswordResetRequestDTO } from '../models/password-reset-request.dto';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,11 @@ export class AuthenticationService {
     }
 
     verifyResetCode(email: string, resetCode: string): Observable<any> {
-      return this.http.post(`${this.apiUrl}/forgot-password`, null, {
-        params: { email, resetCode }
-      });
-  }
+      const params = new HttpParams()
+        .set('email', email)
+        .set('token', resetCode); // 'resetCode' yerine 'token' kullanıyoruz
+    
+      return this.http.post<any>(`${this.apiUrl}/forgot-password`, null, { params });
+    }
     
   }

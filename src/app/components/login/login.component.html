@@ -38,7 +38,7 @@
         <button pButton type="button" label="Verify Code" (click)="verifyCode()"></button>
       </div>
       <div *ngIf="isCodeIncorrect" class="error-message">
-        <i class="pi pi-times-circle"></i> Incorrect reset code. Please try again.
+        <i class="pi pi-times-circle"></i> {{ errorMessage }}
       </div>
       <div *ngIf="isCodeCorrect" class="success-message">
         <i class="pi pi-check-circle"></i> Code verified! Redirecting to set a new password...
