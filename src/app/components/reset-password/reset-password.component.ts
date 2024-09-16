@@ -63,6 +63,10 @@ export class ResetPasswordComponent {
           } else {
             // Başarısız durumda hata mesajını göster
             this.errorMessage = response.message || 'An error occurred while resetting password.';
+             // Hata mesajının 3 saniye sonra kaybolmasını sağla
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000); 
           }
         },
         (error) => {
