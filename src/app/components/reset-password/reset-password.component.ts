@@ -20,6 +20,7 @@ export class ResetPasswordComponent {
     specialChar: false,
   };
   showSuccessPopup: boolean = false;
+  errorMessage: string = '';  // Hata mesajını göstermek için
 
   constructor(
     private fb: FormBuilder,
@@ -37,35 +38,44 @@ export class ResetPasswordComponent {
     this.email = this.route.snapshot.queryParamMap.get('email') || ''; // Email'i de URL'den alıyoruz
     console.log('Token:', this.token);
     console.log('Email:', this.email);
+
   }
 
   onSubmit() {
     if (this.resetPasswordForm.valid && this.isPasswordValid() && !this.passwordsDoNotMatch) {
       const newPassword = this.resetPasswordForm.get('newPassword')?.value;
-
+  
       const passwordResetRequest = {
         email: this.email,  // URL'den aldığımız email
         newPassword: newPassword,
       };
-
+  
       // Şifre sıfırlama isteği
       this.authService.resetPassword(this.token, passwordResetRequest).subscribe(
         (response) => {
-          console.log('Password reset successfully', response);
-          this.showSuccessPopup = true;
-          setTimeout(() => {
-            this.showSuccessPopup = false;
-            this.router.navigate(['/login']);
-          }, 2000); // 2 saniye sonra login sayfasına yönlendir
+          if (response.success) {
+            console.log('Password reset successfully', response);
+            this.showSuccessPopup = true;
+            setTimeout(() => {
+              this.showSuccessPopup = false;
+              this.router.navigate(['/login']);
+            }, 2000); // 2 saniye sonra login sayfasına yönlendir
+          } else {
+            // Başarısız durumda hata mesajını göster
+            this.errorMessage = response.message || 'An error occurred while resetting password.';
+          }
         },
         (error) => {
+          // Backend'den gelen hata mesajını işleyin
           console.error('Password reset failed', error);
+          this.errorMessage = error.error?.message || 'An unexpected error occurred. Please try again.';
         }
       );
     } else {
       this.passwordsDoNotMatch = true;
     }
   }
+  
 
   checkPasswordMatch() {
     const newPassword = this.resetPasswordForm.get('newPassword')?.value;
