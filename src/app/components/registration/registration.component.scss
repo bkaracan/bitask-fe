@@ -84,6 +84,46 @@ button:hover {
   }
 }
 
+/* Şifre eşleşme kontrolü için stiller */
+.password-match-container {
+  margin-top: 1rem;
+  position: relative;
+
+  input {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  input.error {
+    border: 2px solid red;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  }
+
+  input.success {
+    border: 2px solid #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+
+  .retype-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+  }
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+  font-size: 0.875rem;
+}
+
 /* Aktivasyon dialog stilleri */
 .activation-dialog .message {
   margin-bottom: 1.5rem;
@@ -154,4 +194,21 @@ button:hover {
   font-size: 1.2rem;
   color: #333;
   text-align: center;
+}
+
+.success-dialog .dialog-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.disabled-btn {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+.enabled-btn {
+  background-color: #007bff;
+  border-color: #007bff;
 }
