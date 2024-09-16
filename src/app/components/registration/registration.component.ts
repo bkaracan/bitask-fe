@@ -17,6 +17,7 @@ export class RegistrationComponent {
   activationCode: string = '';
   successModal: boolean = false;
   showPasswordPopup: boolean = false;
+  passwordsMatch: boolean = true; // Şifrelerin eşleşip eşleşmediğini takip eden flag
 
   // Şifre validasyonu için kontroller
   passwordValidations = {
@@ -36,8 +37,9 @@ export class RegistrationComponent {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      jobTitleId: [null, Validators.required],
-      dateOfBirth: ['']
+      confirmPassword: ['', Validators.required], // Retype Password alanı
+      jobTitleId: [null, Validators.required], // Job Title zorunlu
+      dateOfBirth: ['', Validators.required] // Doğum tarihi zorunlu
     });
   }
 
@@ -68,8 +70,20 @@ export class RegistrationComponent {
     return this.passwordValidations.hasMinLength && this.passwordValidations.hasUppercase && this.passwordValidations.hasSpecialChar;
   }
 
+  // Şifrelerin eşleşip eşleşmediğini kontrol eden metot
+  checkPasswordMatch(): void {
+    const password = this.registrationForm.get('password')?.value;
+    const confirmPassword = this.registrationForm.get('confirmPassword')?.value;
+    this.passwordsMatch = password === confirmPassword;
+  }
+
+  // Formun genel geçerliliğini kontrol eden metot
+  isFormValid(): boolean {
+    return this.registrationForm.valid && this.isPasswordValid() && this.passwordsMatch;
+  }
+
   onSubmit() {
-    if (this.registrationForm.valid && this.isPasswordValid()) {
+    if (this.isFormValid()) {
       const formData = { ...this.registrationForm.value };
 
       if (formData.dateOfBirth) {
