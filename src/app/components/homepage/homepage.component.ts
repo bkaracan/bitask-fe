@@ -19,7 +19,7 @@ export class HomepageComponent implements OnInit {
   }
 
   navigateToLogin() {
-    this.router.navigate(['/login']); // Login sayfasına yönlendirme yapar
+    this.router.navigate(['/login']);
   }
 
   typeEffect() {
@@ -35,9 +35,6 @@ export class HomepageComponent implements OnInit {
         setTimeout(typeCharacter, 100);
       } else {
         cursorElement!.style.display = 'none';
-        // Butonları görünür yap
-        const buttonsContainerElement = document.getElementById('buttons-container');
-        buttonsContainerElement!.classList.add('button-visible');
       }
     }
 
