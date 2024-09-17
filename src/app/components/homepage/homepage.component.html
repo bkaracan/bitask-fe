@@ -1,25 +1,57 @@
 <div class="homepage-container">
-  <div class="left-section">
-    <div class="icon-title-container">
-      <img src="assets/bitaskicon.png" alt="BiTASK Logo" class="bitask-icon" />
-      <h1>
-        <span class="neon-green">B</span><span class="neon-green">i</span>TASK
-      </h1>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <!-- Sol Bölüm - Logo ve "BiTASK" yazısı -->
+      <a class="navbar-brand">
+        <img src="assets/bitaskicon.png" alt="BiTASK Logo" class="navbar-logo" />
+        <span class="navbar-title">BiTASK</span>
+      </a>
     </div>
-    <p class="slogan">
-      <span id="typed-text"></span><span id="cursor">|</span>
-    </p>
-  </div>
-  <div class="right-section">
-    <h2>Get ready to work!</h2>
-    <div class="button-group">
-      <div class="button-container">
-        <p>I don't have an account.</p>
-        <button id="signup-button" pButton label="Sign Up" icon="pi pi-user-plus" (click)="navigateToRegistration()"></button>
+
+    <!-- Sağ Bölüm - HOME, ABOUT US, CONTACT -->
+    <div class="navbar-right">
+      <ul class="navbar-links">
+        <li>
+          <a href="#"><img src="assets/homeicon.png" alt="Home" class="icon" /> HOME</a>
+        </li>
+        <li>
+          <a href="#"><img src="assets/aboutusicon.png" alt="About Us" class="icon" /> ABOUT US</a>
+        </li>
+        <li>
+          <a href="#"><img src="assets/envelopeicon.png" alt="Contact" class="icon" /> CONTACT</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- İki Ana Bölüm (Sol ve Sağ Bölüm) -->
+  <div class="content-wrapper">
+    <!-- Sol Bölüm - Logo, BiTASK ve slogan -->
+    <div class="left-section">
+      <div class="icon-title-container">
+        <img src="assets/bitaskicon.png" alt="BiTASK Logo" class="bitask-icon" />
+        <h1>
+          <span class="neon-green">B</span><span class="neon-green">i</span>TASK
+        </h1>
       </div>
-      <div class="button-container">
-        <p>I've an account.</p>
-        <button id="login-button" pButton label="Login" icon="pi pi-sign-in" (click)="navigateToLogin()"></button>
+      <p class="slogan">
+        <span id="typed-text"></span><span id="cursor">|</span>
+      </p>
+    </div>
+
+    <!-- Sağ Bölüm - Kayıt ve Giriş butonları -->
+    <div class="right-section">
+      <h2>Get ready to work!</h2>
+      <div class="button-group">
+        <div class="button-container">
+          <p>I don't have an account.</p>
+          <button id="signup-button" pButton label="Sign Up" icon="pi pi-user-plus" (click)="navigateToRegistration()"></button>
+        </div>
+        <div class="button-container">
+          <p>I've an account.</p>
+          <button id="login-button" pButton label="Login" icon="pi pi-sign-in" (click)="navigateToLogin()"></button>
+        </div>
       </div>
     </div>
   </div>

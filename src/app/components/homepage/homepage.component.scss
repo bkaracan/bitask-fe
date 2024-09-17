@@ -1,8 +1,77 @@
 .homepage-container {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   background-color: #1B262C;
 
+  /* Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #1B262C;
+    width: 100%;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+
+    .navbar-logo {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .navbar-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffffff;
+      font-family: 'Rubik', sans-serif;
+    }
+  }
+
+  .navbar-right {
+    .navbar-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    .navbar-links li {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-links a {
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        color: #4379F2;
+      }
+    }
+
+    .navbar-links a:hover {
+      color: #00ff87;
+    }
+  }
+
+  /* İçerik Wrapper */
+  .content-wrapper {
+    display: flex;
+    flex: 1;
+  }
+
+  /* Sol Bölüm */
   .left-section {
     flex: 1;
     display: flex;
@@ -19,12 +88,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px; /* Logo ile BiTASK yazısı arasındaki boşluk */
+      gap: 10px;
     }
 
     .bitask-icon {
-      width: 80px; /* Logonun genişliğini küçülttük */
-      height: 80px; /* Logonun yüksekliğini küçülttük */
+      width: 80px;
+      height: 80px;
     }
 
     h1 {
@@ -39,17 +108,17 @@
       font-size: 1.8rem;
       font-weight: bold;
       margin-top: 0.5rem;
-      /* Açık yeşilden koyu yeşile renk geçişi */
       background: linear-gradient(to right, #00ff87, #007f3f);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-indent: 15px; /* Metni sağa kaydırmak için */
+      text-indent: 15px;
     }
   }
 
+  /* Sağ Bölüm */
   .right-section {
-    flex: 0.5;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,6 +126,8 @@
     background-color: #ffffff;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
     text-align: center;
     padding: 2rem;
 
