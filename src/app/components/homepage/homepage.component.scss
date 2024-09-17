@@ -15,6 +15,18 @@
     text-align: center;
     padding: 2rem;
 
+    .icon-title-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px; /* Logo ile BiTASK yazısı arasındaki boşluk */
+    }
+
+    .bitask-icon {
+      width: 80px; /* Logonun genişliğini küçülttük */
+      height: 80px; /* Logonun yüksekliğini küçülttük */
+    }
+
     h1 {
       font-size: 5rem;
       font-weight: bold;
@@ -27,11 +39,12 @@
       font-size: 1.8rem;
       font-weight: bold;
       margin-top: 0.5rem;
-      /* Açık maviden koyu maviye renk geçişi */
-      background: linear-gradient(to right, #00c6ff, #0072ff);
+      /* Açık yeşilden koyu yeşile renk geçişi */
+      background: linear-gradient(to right, #00ff87, #007f3f);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-indent: 15px; /* Metni sağa kaydırmak için */
     }
   }
 
@@ -83,8 +96,8 @@
     }
 
     button:hover {
-      background-color: #205295;
-      border-color: #205295;
+      background-color: #007f3f;
+      border-color: #007f3f;
     }
   }
 }
