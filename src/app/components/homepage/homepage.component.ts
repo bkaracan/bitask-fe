@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
 
+  showButtons: boolean = false;  // Butonların gösterilip gösterilmeyeceğini kontrol eden flag
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -28,15 +30,16 @@ export class HomepageComponent implements OnInit {
     const cursorElement = document.getElementById('cursor');
     let index = 0;
 
-    function typeCharacter() {
+    const typeCharacter = () => {
       if (index < text.length) {
         typedTextElement!.innerHTML += text.charAt(index);
         index++;
         setTimeout(typeCharacter, 100);
       } else {
         cursorElement!.style.display = 'none';
+        this.showButtons = true;  // Animasyon tamamlandığında butonları göster
       }
-    }
+    };
 
     setTimeout(typeCharacter, 500);
   }
