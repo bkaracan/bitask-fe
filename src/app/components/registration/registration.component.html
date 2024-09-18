@@ -1,60 +1,80 @@
-<div class="registration-container">
-  <div class="card">
-    <h2>Join the team</h2>
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-      <div class="p-field">
-        <label for="firstName">First Name</label>
-        <input id="firstName" type="text" pInputText formControlName="firstName" />
-      </div>
-      <div class="p-field">
-        <label for="lastName">Last Name</label>
-        <input id="lastName" type="text" pInputText formControlName="lastName" />
-      </div>
-      <div class="p-field">
-        <label for="email">Email</label>
-        <input id="email" type="email" pInputText formControlName="email" />
-      </div>
-      <div class="p-field">
-        <label for="password">Password</label>
-        <input id="password" type="password" pInputText formControlName="password" (focus)="showPasswordPopup = true" (input)="checkPasswordStrength(registrationForm.get('password')?.value)" />
-      </div>
+<div class="registration-wrapper">
+  <!-- Sol Bölüm (İkon ve Slogan) -->
+  <div class="left-section">
+    <img src="assets/joinicon.png" alt="Join Icon" class="join-icon" />
+    <h2>Join the team to start working.</h2>
+  </div>
 
-      <!-- Şifre kriterleri için pop-up -->
-      <div class="password-popup" *ngIf="showPasswordPopup">
-        <p [ngClass]="{ 'valid': passwordValidations.hasMinLength, 'invalid': !passwordValidations.hasMinLength }">
-          <i *ngIf="passwordValidations.hasMinLength" class="pi pi-check"></i>
-          Must be at least 8 characters
-        </p>
-        <p [ngClass]="{ 'valid': passwordValidations.hasUppercase, 'invalid': !passwordValidations.hasUppercase }">
-          <i *ngIf="passwordValidations.hasUppercase" class="pi pi-check"></i>
-          Must contain at least one uppercase letter
-        </p>
-        <p [ngClass]="{ 'valid': passwordValidations.hasSpecialChar, 'invalid': !passwordValidations.hasSpecialChar }">
-          <i *ngIf="passwordValidations.hasSpecialChar" class="pi pi-check"></i>
-          Must contain at least one special character
-        </p>
-      </div>
+  <!-- Sağ Bölüm (Kayıt Formu) -->
+  <div class="right-section">
+    <div class="registration-container">
+      <div class="card">
+        <img src="assets/signupicon.png" alt="Sign Up Logo" class="signup-icon" />
+        <h2>Create your account</h2>
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
 
-      <!-- Retype Password Alanı -->
-      <div class="p-field">
-        <label for="confirmPassword">Retype Password</label>
-        <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" placeholder="Please retype your password" (input)="checkPasswordMatch()" />
-        <small *ngIf="!passwordsMatch && registrationForm.get('confirmPassword')?.touched" class="p-error">Passwords don't match!</small>
-      </div>
+          <div class="p-field">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" pInputText formControlName="firstName" />
+          </div>
+          <div class="p-field">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" pInputText formControlName="lastName" />
+          </div>
+          <div class="p-field">
+            <label for="email">Email</label>
+            <input id="email" type="email" pInputText formControlName="email" />
+          </div>
+          <div class="p-field">
+            <label for="password">Password</label>
+            <input id="password" type="password" pInputText formControlName="password" 
+                   (focus)="showPasswordPopup = true" 
+                   (input)="checkPasswordStrength(registrationForm.get('password')?.value)" />
+          </div>
 
-      <div class="p-field">
-        <label for="jobTitleId">Job Title</label>
-        <p-dropdown [options]="jobTitles" formControlName="jobTitleId" placeholder="Select a Job Title"></p-dropdown>
-      </div>
+          <!-- Şifre kriterleri pop-up -->
+          <div class="password-popup" *ngIf="showPasswordPopup">
+            <p [ngClass]="{ 'valid': passwordValidations.hasMinLength, 'invalid': !passwordValidations.hasMinLength }">
+              <i *ngIf="passwordValidations.hasMinLength" class="pi pi-check"></i>
+              Must be at least 8 characters
+            </p>
+            <p [ngClass]="{ 'valid': passwordValidations.hasUppercase, 'invalid': !passwordValidations.hasUppercase }">
+              <i *ngIf="passwordValidations.hasUppercase" class="pi pi-check"></i>
+              Must contain at least one uppercase letter
+            </p>
+            <p [ngClass]="{ 'valid': passwordValidations.hasSpecialChar, 'invalid': !passwordValidations.hasSpecialChar }">
+              <i *ngIf="passwordValidations.hasSpecialChar" class="pi pi-check"></i>
+              Must contain at least one special character
+            </p>
+          </div>
 
-      <div class="p-field">
-        <label for="dateOfBirth">Date of Birth</label>
-        <p-calendar id="dateOfBirth" formControlName="dateOfBirth" [showIcon]="true"></p-calendar>
-      </div>
+          <div class="p-field">
+            <label for="confirmPassword">Retype Password</label>
+            <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" 
+                   placeholder="Please retype your password" 
+                   (input)="checkPasswordMatch()" />
+            <small *ngIf="!passwordsMatch && registrationForm.get('confirmPassword')?.touched" class="p-error">
+              Passwords don't match!
+            </small>
+          </div>
 
-      <!-- Butonun disable durumunu kontrol etmek için [disabled] kullanıyoruz -->
-      <button pButton type="submit" label="Register" [disabled]="!isFormValid()" [ngClass]="{ 'disabled-btn': !isFormValid(), 'enabled-btn': isFormValid() }"></button>
-    </form>
+          <div class="p-field">
+            <label for="jobTitleId">Job Title</label>
+            <p-dropdown [options]="jobTitles" formControlName="jobTitleId" placeholder="Select a Job Title"></p-dropdown>
+          </div>
+
+          <div class="p-field">
+            <label for="dateOfBirth">Date of Birth</label>
+            <p-calendar id="dateOfBirth" formControlName="dateOfBirth" [showIcon]="true"></p-calendar>
+          </div>
+
+          <!-- Butonun disable durumunu kontrol etmek için -->
+          <button pButton type="submit" label="Register" 
+                  [disabled]="!isFormValid()" 
+                  [ngClass]="{ 'disabled-btn': !isFormValid(), 'enabled-btn': isFormValid() }"></button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
