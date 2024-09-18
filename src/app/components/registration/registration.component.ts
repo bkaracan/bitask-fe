@@ -63,7 +63,7 @@ export class RegistrationComponent {
   checkPasswordStrength(password: string) {
     this.passwordValidations.hasMinLength = password.length >= 8;
     this.passwordValidations.hasUppercase = /[A-Z]/.test(password);
-    this.passwordValidations.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    this.passwordValidations.hasSpecialChar = /[!'^+=@#$%^&*(),.?"/_\£½:{}|<>|]/.test(password);
   }
 
   isPasswordValid(): boolean {

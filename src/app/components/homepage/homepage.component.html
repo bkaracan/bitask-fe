@@ -21,6 +21,12 @@
         <li>
           <a href="#"><img src="assets/envelopeicon.png" alt="Contact" class="icon" /> CONTACT</a>
         </li>
+        <li>
+          <a href="http://localhost:4200/registration"><img src="assets/signupicon.png" alt="Sign Up" class="icon" /> SIGN UP</a>
+        </li>
+        <li>
+          <a href="http://localhost:4200/login"><img src="assets/loginicon.png" alt="Login" class="icon" /> LOGIN</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -38,12 +44,9 @@
       <p class="slogan">
         <span id="typed-text"></span><span id="cursor">|</span>
       </p>
-    </div>
 
-    <!-- Sağ Bölüm - Kayıt ve Giriş butonları -->
-    <div class="right-section">
-      <h2>Get ready to work!</h2>
-      <div class="button-group">
+      <!-- Buton Grubu - Animasyon tamamlanınca görünür olacak -->
+      <div [class.visible]="showButtons" class="button-group">
         <div class="button-container">
           <p>I don't have an account.</p>
           <button id="signup-button" pButton label="Sign Up" icon="pi pi-user-plus" (click)="navigateToRegistration()"></button>
@@ -54,5 +57,37 @@
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Sağ Bölüm - Boş bırakıldı -->
+    <div class="right-section">
+      <div class="info-container">
+        <div class="info-item">
+          <img src="assets/fasticon.png" alt="Fast Icon" class="info-icon" />
+          <div class="info-text">
+            <h3>Fast</h3>
+            <p>
+              Our application provides instant feedback through optimized data structures and high-performance background processes. Create, update, and track tasks with a single click, allowing you to execute your plans without wasting time.
+            </p>
+          </div>
+        </div>
+        <div class="info-item">
+          <img src="assets/plannedicon.png" alt="Planned Icon" class="info-icon" />
+          <div class="info-text">
+            <h3>Planned</h3>
+            <p>
+              With our user-friendly interface, easily organize your tasks by priority and maintain control at every step. Plan your short and long-term projects perfectly using our detailed calendar and task tracking modules.
+            </p>
+          </div>
+        </div>
+        <div class="info-item">
+          <img src="assets/organizedicon.png" alt="Organized Icon" class="info-icon" />
+          <div class="info-text">
+            <h3>Organized</h3>
+            <p>
+              Organize your tasks by categories and ensure your entire team is on the same page with our collaboration-enhancing tools. Monitor task statuses in real-time, maximizing organization at every stage.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
 </div>
