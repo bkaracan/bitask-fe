@@ -18,6 +18,8 @@ export class RegistrationComponent {
   successModal: boolean = false;
   showPasswordPopup: boolean = false;
   passwordsMatch: boolean = true; // Şifrelerin eşleşip eşleşmediğini takip eden flag
+  emailExistsError: boolean = false;  // E-mail'in zaten var olup olmadığını kontrol eden flag
+  generalErrorMessage: string | null = null
 
   // Şifre validasyonu için kontroller
   passwordValidations = {
@@ -94,10 +96,23 @@ export class RegistrationComponent {
       this.authService.register(formData).subscribe(
         response => {
           console.log('Registration successful', response);
-          this.displayModal = true;
+          if (response.success) {
+            // Başarılı ise aktivasyon kodu popup'ını göster
+            this.displayModal = true;
+          } else if (response.code === 400 && response.message === 'Email already exists!') {
+            // Email zaten mevcutsa, emailExistsError flag'ini true yap ve hata mesajını göster
+            this.emailExistsError = true;
+            this.generalErrorMessage = response.message;
+          } else {
+            // Diğer genel hatalar için genel hata mesajı
+            this.generalErrorMessage = 'Registration failed. Please try again.';
+            console.error('Registration failed', response);
+          }
         },
         error => {
-          console.error('Registration failed', error);
+          // API çağrısında bir hata olursa genel hata mesajını göster
+          console.error('Error during registration', error);
+          this.generalErrorMessage = 'An error occurred. Please try again later.';
         }
       );
     } else {

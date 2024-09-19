@@ -23,7 +23,13 @@
           </div>
           <div class="p-field">
             <label for="email">Email</label>
-            <input id="email" type="email" pInputText formControlName="email" />
+            <input id="email" 
+                   type="email" 
+                   pInputText 
+                   formControlName="email" 
+                   [ngClass]="{ 'error-border': emailExistsError }" />
+            <!-- Email zaten varsa gösterilecek hata mesajı -->
+            <small *ngIf="emailExistsError" class="p-error">This email already exists!</small>
           </div>
           <div class="p-field">
             <label for="password">Password</label>
