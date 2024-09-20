@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
+import { noWhitespaceValidator } from '../../validators/no-whitespace.validator';
 
 @Component({
   selector: 'app-login',
@@ -27,15 +28,19 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      email: ['', [Validators.required, Validators.email, noWhitespaceValidator()]],
+      password: ['', [Validators.required, Validators.minLength(8), noWhitespaceValidator()]]
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const formData = this.loginForm.value;
-
+      // Trim the input values
+      const formData = {
+        email: this.loginForm.value.email.trim(),
+        password: this.loginForm.value.password.trim()
+      };
+  
       this.authService.authenticate(formData).subscribe(
         (response: any) => {
           if (response.success) {
@@ -50,6 +55,9 @@ export class LoginComponent {
           this.errorMessage = 'Your email or password is incorrect.';
         }
       );
+    } else {
+      // Mark all controls as touched to trigger validation messages
+      this.loginForm.markAllAsTouched();
     }
   }
 

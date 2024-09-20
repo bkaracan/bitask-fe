@@ -1,5 +1,6 @@
+<!-- login.component.html -->
 <div class="page-wrapper">
-  <!-- Sol üst köşede BiTASK ve icon -->
+  <!-- Header Section -->
   <div class="header">
     <img src="assets/bitaskicon.png" alt="BiTASK Icon" class="header-logo" />
     <h1 class="header-title">BiTASK</h1>
@@ -7,31 +8,142 @@
 
   <div class="login-container">
     <div class="login-card">
-      <!-- Formun üst kısmında login icon -->
+      <!-- Login Icon -->
       <img src="assets/loginicon.png" alt="Login Icon" class="login-icon" />
 
       <h2>Get ready to work!</h2>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="p-field" [ngClass]="{ error: isLoginFailed }">
-          <label for="email">Email</label>
-          <input id="email" type="email" pInputText formControlName="email" />
-        </div>
-        <div class="p-field" [ngClass]="{ error: isLoginFailed }">
-          <label for="password">Password</label>
-          <input id="password" type="password" pInputText formControlName="password" />
-        </div>
-        <div *ngIf="isLoginFailed" class="error-message">
+        <!-- Server-Side Login Error Message -->
+        <div *ngIf="isLoginFailed" class="error-message server-error">
           {{ errorMessage }}
         </div>
+
+        <!-- Email Field -->
+        <div
+          class="p-field"
+          [ngClass]="{
+            error:
+              isLoginFailed ||
+              (loginForm.get('email')?.invalid &&
+                (loginForm.get('email')?.dirty ||
+                  loginForm.get('email')?.touched))
+          }"
+        >
+          <label for="email">Email</label>
+          <input id="email" type="email" pInputText formControlName="email" />
+          <!-- Email Error Messages -->
+          <div
+            *ngIf="
+              loginForm.get('email')?.errors?.['required'] &&
+              (loginForm.get('email')?.dirty ||
+                loginForm.get('email')?.touched)
+            "
+            class="error-message"
+          >
+            The email cannot be null or empty value!
+          </div>
+          <div
+            *ngIf="
+              loginForm.get('email')?.errors?.['email'] &&
+              !loginForm.get('email')?.errors?.['whitespace'] &&
+              (loginForm.get('email')?.dirty ||
+                loginForm.get('email')?.touched)
+            "
+            class="error-message"
+          >
+            Please enter a valid email address!
+          </div>
+          <div
+            *ngIf="
+              loginForm.get('email')?.errors?.['whitespace'] &&
+              !loginForm.get('email')?.errors?.['required'] &&
+              (loginForm.get('email')?.dirty ||
+                loginForm.get('email')?.touched)
+            "
+            class="error-message"
+          >
+            The email cannot be null or empty value!
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div
+          class="p-field"
+          [ngClass]="{
+            error:
+              isLoginFailed ||
+              (loginForm.get('password')?.invalid &&
+                (loginForm.get('password')?.dirty ||
+                  loginForm.get('password')?.touched))
+          }"
+        >
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            pInputText
+            formControlName="password"
+          />
+          <!-- Password Error Messages -->
+          <div
+            *ngIf="
+              loginForm.get('password')?.errors?.['required'] &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+            class="error-message"
+          >
+            The password cannot be null or empty value!
+          </div>
+          <div
+            *ngIf="
+              loginForm.get('password')?.errors?.['minlength'] &&
+              !loginForm.get('password')?.errors?.['whitespace'] &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+            class="error-message"
+          >
+            Password must be at least 8 characters long.
+          </div>
+          <div
+            *ngIf="
+              loginForm.get('password')?.errors?.['whitespace'] &&
+              !loginForm.get('password')?.errors?.['required'] &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+            class="error-message"
+          >
+            The password cannot be null or empty value!
+          </div>
+        </div>
+
+        <!-- Submit Button -->
         <button pButton type="submit" label="Login" class="login-button"></button>
-        <p class="forgot-password"><a href="#" (click)="openForgotPasswordPopup($event)">Forgot password?</a></p>
+        <p class="forgot-password">
+          <a href="#" (click)="openForgotPasswordPopup($event)">
+            Forgot password?
+          </a>
+        </p>
       </form>
     </div>
 
     <!-- Forgot Password Popup -->
-    <p-dialog header="Reset Password Code" [(visible)]="showForgotPasswordPopup" [modal]="true" [closable]="true">
+    <p-dialog
+      header="Reset Password Code"
+      [(visible)]="showForgotPasswordPopup"
+      [modal]="true"
+      [closable]="true"
+    >
       <p>Enter your email address to receive a password reset code.</p>
-      <input id="emailForReset" type="email" [(ngModel)]="emailForReset" pInputText placeholder="Enter your email address" />
+      <input
+        id="emailForReset"
+        type="email"
+        [(ngModel)]="emailForReset"
+        pInputText
+        placeholder="Enter your email address"
+      />
       <div class="dialog-actions">
         <button pButton type="button" label="Send Reset Code" (click)="sendResetCode()"></button>
       </div>
@@ -42,7 +154,13 @@
       <!-- Code Verification Pop-up -->
       <div *ngIf="showCodeVerification">
         <p>Enter the 6-digit code sent to your email:</p>
-        <input id="resetCode" type="text" [(ngModel)]="resetCode" pInputText placeholder="Enter your reset code" />
+        <input
+          id="resetCode"
+          type="text"
+          [(ngModel)]="resetCode"
+          pInputText
+          placeholder="Enter your reset code"
+        />
         <div class="dialog-actions">
           <button pButton type="button" label="Verify Code" (click)="verifyCode()"></button>
         </div>
