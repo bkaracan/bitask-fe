@@ -99,11 +99,6 @@ verifyCode(): void {
     }
   );
 }
-
-  
-  
-  
-
   openForgotPasswordPopup(event: Event): void {
     event.preventDefault();
     this.showForgotPasswordPopup = true;

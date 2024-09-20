@@ -99,6 +99,8 @@ export class RegistrationComponent {
           if (response.success) {
             // Başarılı ise aktivasyon kodu popup'ını göster
             this.displayModal = true;
+            this.emailExistsError = false;
+            this.generalErrorMessage = null;
           } else if (response.code === 400 && response.message === 'Email already exists!') {
             // Email zaten mevcutsa, emailExistsError flag'ini true yap ve hata mesajını göster
             this.emailExistsError = true;
@@ -127,12 +129,23 @@ export class RegistrationComponent {
   }
 
   activateAccount() {
+    if (this.activationCode.length !== 6) {
+      this.isInvalidCode = true;
+      return;
+    }
+
     this.authService.activateAccount(this.activationCode).subscribe(
       response => {
         if (response.success) {
           console.log('Account activated successfully', response);
           this.displayModal = false;
+          this.isInvalidCode = false;
           this.successModal = true;
+
+          // 3 saniye sonra otomatik olarak login sayfasına yönlendir
+          setTimeout(() => {
+            this.closeSuccessModal();
+          }, 3000);
         } else {
           console.error('Account activation failed', response);
           this.isInvalidCode = true;
