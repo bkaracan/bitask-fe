@@ -35,12 +35,11 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
-  
+
       this.authService.authenticate(formData).subscribe(
         (response: any) => {
           if (response.success) {
-            // Başarılı giriş
-            this.router.navigate(['/dashboard']);  // Dashboard sayfasına yönlendirme
+            this.router.navigate(['/dashboard']);
           } else {
             this.isLoginFailed = true;
             this.errorMessage = response.message || 'An unexpected error occurred.';
@@ -53,15 +52,13 @@ export class LoginComponent {
       );
     }
   }
-  
 
-  // Reset kodu göndermek için kullanılacak metod
   sendResetCode(): void {
     if (this.emailForReset) {
       this.authService.sendResetPasswordCode(this.emailForReset).subscribe(
         (response: any) => {
           this.codeSent = true;
-          this.showCodeVerification = true; // Şifre sıfırlama kodu alanını göster
+          this.showCodeVerification = true;
         },
         (error: any) => {
           this.passwordResetSuccessMessage = 'Failed to send password reset code. Please try again.';
@@ -70,35 +67,32 @@ export class LoginComponent {
     }
   }
 
-  // Kullanıcıdan gelen kodu doğrulama işlemi
-verifyCode(): void {
-  this.authService.verifyResetCode(this.emailForReset, this.resetCode).subscribe(
-    (response: any) => {
-      console.log('Backend yanıtı:', response);
-      if (response.success) {
-        this.isCodeCorrect = true;
-        this.isCodeIncorrect = false;
-        this.errorMessage = ''; // Önceki hata mesajını temizleyin
-        setTimeout(() => {
-          // Email ve Token'i URL'ye ekleyerek yönlendirme yapıyoruz
-          this.router.navigate(['/reset-password'], {
-            queryParams: { token: this.resetCode, email: this.emailForReset }
-          });
-        }, 2000);
-      } else {
+  verifyCode(): void {
+    this.authService.verifyResetCode(this.emailForReset, this.resetCode).subscribe(
+      (response: any) => {
+        if (response.success) {
+          this.isCodeCorrect = true;
+          this.isCodeIncorrect = false;
+          this.errorMessage = '';
+          setTimeout(() => {
+            this.router.navigate(['/reset-password'], {
+              queryParams: { token: this.resetCode, email: this.emailForReset }
+            });
+          }, 2000);
+        } else {
+          this.isCodeIncorrect = true;
+          this.isCodeCorrect = false;
+          this.errorMessage = response.message || 'Incorrect reset code. Please try again.';
+        }
+      },
+      (error: any) => {
         this.isCodeIncorrect = true;
         this.isCodeCorrect = false;
-        this.errorMessage = response.message || 'Incorrect reset code. Please try again.';
+        this.errorMessage = 'Reset code verification failed. Please try again.';
       }
-    },
-    (error: any) => {
-      this.isCodeIncorrect = true;
-      this.isCodeCorrect = false;
-      this.errorMessage = 'Reset code verification failed. Please try again.';
-      console.error('Reset code verification failed', error);
-    }
-  );
-}
+    );
+  }
+
   openForgotPasswordPopup(event: Event): void {
     event.preventDefault();
     this.showForgotPasswordPopup = true;
