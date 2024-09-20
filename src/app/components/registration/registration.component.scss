@@ -54,7 +54,6 @@
     margin-right: auto;
   }
 
-
   .card {
     padding: 1rem; /* İç boşluk azaltıldı */
     border-radius: 30px;
@@ -64,7 +63,7 @@
     width: 100%; /* Kartın genişliği ekran boyutuna göre ayarlanacak */
     min-height: 500px; /* Minimum yükseklik ayarlandı */
     height: auto; /* Yükseklik içeriğe göre ayarlanacak */
-}
+  }
 
   .password-popup {
     background-color: #f9f9f9;
@@ -112,6 +111,13 @@
     display: block; /* Hata mesajının görünürlüğünü zorla */
   }
 
+  .general-error {
+    margin-top: 1rem;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+
   .error-border {
     border: 2px solid red !important;
   }
@@ -139,6 +145,7 @@
     font-size: 1rem;
     border-radius: 4px;
     color: #ffffff;
+    transition: background-color 0.3s, border-color 0.3s;
   }
 
   button:hover {
@@ -158,90 +165,148 @@
     border-color: #00ff87;
   }
 
-  .password-popup {
-    background-color: #f9f9f9;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 0.875rem;
+  /* Aktivasyon Dialog Stilleri */
+  .activation-dialog {
+    .ui-dialog-content {
+      background-color: #35374B !important;
+      color: #4CCD99 !important;
+      padding: 2rem !important;
+    }
+
+    .ui-dialog-titlebar {
+      background-color: #35374B !important;
+      border-bottom: 1px solid #4CCD99 !important;
+      color: #4CCD99 !important;
+    }
+
+    .message {
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #4CCD99;
+    }
+    
+    .p-field {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      margin-bottom: 0.25rem;
+      display: block;
+      font-weight: bold;
+      color: #4CCD99;
+    }
+    
+    input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+      background-color: #ffffff;
+      color: #35374B;
+    }
+    
+    .error-border {
+      border-color: red !important;
+    }
+    
+    .error-message {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: red;
+    }
+    
+    .dialog-actions {
+      display: flex;
+      justify-content: center; /* Butonu ortalamak için flex-center kullanıldı */
+      margin-top: 1.5rem;
+    }
+    
+    button {
+      width: auto;
+      padding: 0.5rem 1rem;
+      background-color: #4CCD99;
+      border-color: #4CCD99;
+      color: #ffffff;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    button:hover {
+      background-color: darken(#4CCD99, 10%);
+      border-color: darken(#4CCD99, 10%);
+    }
   }
 
-  .activation-dialog .message {
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-  
-  .activation-dialog .p-field {
-    margin-bottom: 1.5rem;
-  }
-  
-  .activation-dialog label {
-    margin-bottom: 0.25rem;
-    display: block;
-    font-weight: bold;
-  }
-  
-  .activation-dialog input {
-    padding: 0.5rem;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-  }
-  
-  .activation-dialog .error-border {
-    border-color: red !important;
-  }
-  
-  .activation-dialog .error-message {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    color: red;
-  }
-  
-  .activation-dialog .dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  /* Hesap başarıyla aktifleştirildiğinde kullanılan dialog */
-  .success-dialog .success-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-  }
-  
-  .success-dialog .success-icon {
-    width: 60px;
-    height: 60px;
-    background-color: #4caf50;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  
-  .success-dialog .success-icon i {
-    color: white;
-    font-size: 2rem;
-  }
-  
-  .success-dialog .success-message {
-    font-size: 1.2rem;
-    color: #333;
-    text-align: center;
-  }
-  
-  .success-dialog .dialog-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
+  /* Başarılı Aktivasyon Dialog Stilleri */
+  .success-dialog {
+    .ui-dialog-content {
+      background-color: #35374B !important;
+      color: #4CCD99 !important;
+      padding: 2rem !important;
+    }
+
+    .ui-dialog-titlebar {
+      background-color: #35374B !important;
+      border-bottom: 1px solid #4CCD99 !important;
+      color: #4CCD99 !important;
+    }
+
+    .success-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      background-color: #4CCD99;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .success-icon i {
+      color: white;
+      font-size: 2rem;
+    }
+    
+    .success-message {
+      font-size: 1.2rem;
+      color: #4CCD99; /* Yeşil renge güncellendi */
+      text-align: center;
+    }
+    
+    .dialog-actions {
+      display: flex;
+      justify-content: center; /* Butonu ortalamak için */
+      margin-top: 1rem;
+    }
+
+    button {
+      width: auto;
+      padding: 0.5rem 1rem;
+      background-color: #4CCD99;
+      border-color: #4CCD99;
+      color: #ffffff;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    button:hover {
+      background-color: darken(#4CCD99, 10%);
+      border-color: darken(#4CCD99, 10%);
+    }
   }
 }
