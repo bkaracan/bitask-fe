@@ -66,32 +66,42 @@
   }
 
   .password-popup {
-    background-color: #f9f9f9;
-    padding: 1rem;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 0.875rem;
-  
-    p {
-      margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-    }
-  
-    .valid {
-      color: #28a745; /* Şifre kriterleri sağlandığında yeşil */
-    }
-  
-    .invalid {
-      color: red; /* Şifre kriterleri sağlanmadığında kırmızı */
-    }
-  
-    i {
-      margin-right: 5px;
-    }
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 10px;
+    margin-bottom: 15px; /* Alt boşluk ekleyelim */
+    max-width: 400px;
   }
+  
+  .password-popup p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .password-popup .valid {
+    color: green;
+  }
+  
+  .password-popup .invalid {
+    color: red;
+  }
+  
+  .success-message {
+    color: green;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }  
 
   .card h2 {
     text-align: center;
@@ -109,6 +119,14 @@
     color: red;
     font-weight: bold;
     display: block; /* Hata mesajının görünürlüğünü zorla */
+    margin-bottom: 10px;
+  }
+
+  .p-success {
+    color: green;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px;
   }
 
   .general-error {

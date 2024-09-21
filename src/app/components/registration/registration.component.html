@@ -40,29 +40,45 @@
 
           <!-- Şifre kriterleri pop-up -->
           <div class="password-popup" *ngIf="showPasswordPopup">
-            <p [ngClass]="{ 'valid': passwordValidations.hasMinLength, 'invalid': !passwordValidations.hasMinLength }">
-              <i *ngIf="passwordValidations.hasMinLength" class="pi pi-check"></i>
-              Must be at least 8 characters
-            </p>
-            <p [ngClass]="{ 'valid': passwordValidations.hasUppercase, 'invalid': !passwordValidations.hasUppercase }">
-              <i *ngIf="passwordValidations.hasUppercase" class="pi pi-check"></i>
-              Must contain at least one uppercase letter
-            </p>
-            <p [ngClass]="{ 'valid': passwordValidations.hasSpecialChar, 'invalid': !passwordValidations.hasSpecialChar }">
-              <i *ngIf="passwordValidations.hasSpecialChar" class="pi pi-check"></i>
-              Must contain at least one special character
-            </p>
+            <ng-container *ngIf="!isPasswordValid(); else successMessage">
+              <p [ngClass]="{ 'valid': passwordValidations.hasMinLength, 'invalid': !passwordValidations.hasMinLength }">
+                <i *ngIf="passwordValidations.hasMinLength" class="pi pi-check"></i>
+                Must be at least 8 characters
+              </p>
+              <p [ngClass]="{ 'valid': passwordValidations.hasUppercase, 'invalid': !passwordValidations.hasUppercase }">
+                <i *ngIf="passwordValidations.hasUppercase" class="pi pi-check"></i>
+                Must contain at least one uppercase letter
+              </p>
+              <p [ngClass]="{ 'valid': passwordValidations.hasSpecialChar, 'invalid': !passwordValidations.hasSpecialChar }">
+                <i *ngIf="passwordValidations.hasSpecialChar" class="pi pi-check"></i>
+                Must contain at least one special character
+              </p>
+            </ng-container>
+          
+            <!-- Tüm koşullar sağlandığında gösterilecek mesaj -->
+            <ng-template #successMessage>
+              <p class="success-message">
+                Password conditions are met!
+              </p>
+            </ng-template>
           </div>
+          
 
           <div class="p-field">
             <label for="confirmPassword">Retype Password</label>
             <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" 
                    placeholder="Please retype your password" 
                    (input)="checkPasswordMatch()" />
+            <!-- Şifreler eşleşmediğinde hata mesajı -->
             <small *ngIf="!passwordsMatch && registrationForm.get('confirmPassword')?.touched" class="p-error">
               Passwords don't match!
             </small>
+            <!-- Şifreler eşleştiğinde başarı mesajı -->
+            <small *ngIf="passwordsMatch && registrationForm.get('confirmPassword')?.touched" class="p-success">
+              Passwords match!
+            </small>
           </div>
+          
 
           <div class="p-field">
             <label for="jobTitleId">Job Title</label>
