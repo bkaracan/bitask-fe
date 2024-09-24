@@ -44,6 +44,8 @@ export class LoginComponent {
       this.authService.authenticate(formData).subscribe(
         (response: any) => {
           if (response.success) {
+            // Token'ı localStorage'a kaydet
+            localStorage.setItem('jwtToken', response.data.token);
             this.router.navigate(['/dashboard']);
           } else {
             this.isLoginFailed = true;
