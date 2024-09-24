@@ -7,10 +7,26 @@
 </div>
 
 <div class="popup" *ngIf="isUserPopupOpen">
-  <img src="assets/usericon.png" alt="User Icon" class="user-icon" />  <!-- İkon eklendi -->
-  <p><strong></strong> {{ userFullName }}</p>
-  <p><strong></strong> {{ userEmail }}</p>
-  <p><strong></strong> {{ userJobTitle }}</p>
+  <img src="assets/usericon.png" alt="User Icon" class="user-icon" />
+  <p><strong>{{ userFullName }}</strong></p>
+  <p><strong>{{ userEmail }}</strong></p>
+  <p><strong>{{ userJobTitle }}</strong></p>
+
+  <!-- Kullanıcı statüsünü gösteren buton -->
+  <div class="status-container">
+    <p><strong>{{ userStatus }}</strong></p>
+    <button (click)="openStatusPopup()">Change Status</button> <!-- Statü değiştirme popup açma butonu -->
+  </div>
+</div>
+
+<!-- Statü Seçim Pop-up'ı -->
+<div class="status-popup" *ngIf="isStatusPopupOpen">
+  <h3>Select Your Status</h3>
+  <ul>
+    <li *ngFor="let status of userStatusList" (click)="onStatusSelect(status)">
+      {{ status }}
+    </li>
+  </ul>
 </div>
 
 <div class="dashboard-container">
