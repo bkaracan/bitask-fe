@@ -1,5 +1,19 @@
-<div class="dashboard-container">
-    <h1>Welcome to the Dashboard</h1>
-    <p>This is your main application page.</p>
+<div class="navbar">
+  <img src="assets/bitaskicon.png" alt="BiTASK Icon" class="logo" />
+  <span class="title">BiTASK</span>
+  <div class="user-circle" (click)="openUserPopup()">
+    <span class="user-initials">{{ userInitials }}</span>
   </div>
-  
+</div>
+
+<div class="popup" *ngIf="isUserPopupOpen">
+  <img src="assets/usericon.png" alt="User Icon" class="user-icon" />  <!-- İkon eklendi -->
+  <p><strong></strong> {{ userFullName }}</p>
+  <p><strong></strong> {{ userEmail }}</p>
+  <p><strong></strong> {{ userJobTitle }}</p>
+</div>
+
+<div class="dashboard-container">
+  <h1>Welcome to the Dashboard</h1>
+  <p>This is your main application page.</p>
+</div>
