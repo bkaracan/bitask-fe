@@ -17,7 +17,6 @@
     margin-left: 5px;  // İkon ile metin arasına boşluk bırak
   }
 
-
   .user-circle {
     background-color: #00ff87;
     width: 50px;
@@ -56,13 +55,66 @@
   img.user-icon {
     width: 50px;  /* İkon boyutu */
     height: 50px;
-    display: block;  /* Ortalamak için gerekli */
+    display: block;
     margin: 0 auto 10px auto;  /* İkonu ortalar ve altına boşluk bırakır */
   }
 
-
   p {
     margin: 5px 0;
+  }
+
+  .status-container {
+    display: flex;
+    align-items: center;
+
+    p {
+      margin-right: 10px;
+      font-size: 14px;
+      color: #00ff87;  /* Mevcut durum yazısı */
+    }
+
+    select {
+      display: none;  // Select'i kaldırdık, yeni popup üzerinden işlem yapılacak
+    }
+  }
+}
+
+// Yeni status popup stilini ekleyelim
+.status-popup {
+  position: absolute;
+  right: 20px;
+  top: 150px;
+  background-color: #16262c;
+  padding: 15px;
+  border-radius: 8px;
+  color: #00ff87;
+
+  h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      background-color: #16262c;
+      color: #00ff87;
+      border: 1px solid #00ff87;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #00ff87;
+        color: #16262c;
+      }
+    }
   }
 }
 
