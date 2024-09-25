@@ -12,22 +12,33 @@
   <p><strong>{{ userEmail }}</strong></p>
   <p><strong>{{ userJobTitle }}</strong></p>
 
-  <!-- Kullanıcı statüsünü gösteren buton -->
+  <!-- Statü Değiştirme İkonu -->
   <div class="status-container">
     <p><strong>{{ userStatus }}</strong></p>
-    <button (click)="openStatusPopup()">Change Status</button> <!-- Statü değiştirme popup açma butonu -->
+    <div class="status-change-icon" (click)="openStatusPopup()">
+      <span>&gt;</span>
+    </div>
   </div>
 </div>
 
 <!-- Statü Seçim Pop-up'ı -->
 <div class="status-popup" *ngIf="isStatusPopupOpen">
-  <h3>Select Your Status</h3>
-  <ul>
-    <li *ngFor="let status of userStatusList" (click)="onStatusSelect(status)">
-      {{ status }}
+  <ul class="status-list">
+    <li class="status-item online-status" (click)="onStatusSelect('ONLINE')">
+      <span class="status-circle"></span>
+      <span class="status-text">Online</span>
+    </li>
+    <li class="status-item away-status" (click)="onStatusSelect('AWAY')">
+      <span class="status-circle"></span>
+      <span class="status-text">Away</span>
+    </li>
+    <li class="status-item busy-status" (click)="onStatusSelect('BUSY')">
+      <span class="status-circle"></span>
+      <span class="status-text">Busy</span>
     </li>
   </ul>
 </div>
+
 
 <div class="dashboard-container">
   <h1>Welcome to the Dashboard</h1>

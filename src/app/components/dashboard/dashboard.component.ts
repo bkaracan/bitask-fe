@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
-import { UserStatusService } from 'src/app/services/user-status.service';  // UserStatusService'i import edin
+import { UserStatusService } from 'src/app/services/user-status.service';
 import { UserDTO } from 'src/app/models/user.dto';
 
 @Component({
@@ -15,43 +15,32 @@ export class DashboardComponent {
   userStatus: string = '';
   userInitials: string = '';
   selectedUserStatus: string = '';
-  userStatusList: string[] = [];  // userStatusList değişkeni eklendi
+  userStatusList: string[] = [];
   isUserPopupOpen: boolean = false;
-  isStatusPopupOpen: boolean = false;  // Bu değişkeni ekliyoruz
-  isDropdownOpen: boolean = false;
+  isStatusPopupOpen: boolean = false;
 
   constructor(private userService: UserService, private userStatusService: UserStatusService) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('jwtToken');  // Token'ı localStorage'dan alıyoruz
+    const token = localStorage.getItem('jwtToken');
     if (token) {
       const decodedToken: UserDTO = this.userService.decodeToken(token);
-      
-      // fullName'i token'dan çekiyoruz
-      const fullName = decodedToken.fullName || '';  
-      const nameParts = fullName.split(' ');  // Ad ve soyadı ayırmak için
+      const fullName = decodedToken.fullName || '';
+      const nameParts = fullName.split(' ');
       this.userFullName = fullName;
-      this.userEmail = decodedToken.sub;  // Email token'daki 'sub' alanından geliyor
+      this.userEmail = decodedToken.sub;
       this.userJobTitle = decodedToken.jobTitle;
       this.userStatus = decodedToken.userStatus;
       this.userInitials = `${nameParts[0]?.charAt(0) || ''}${nameParts[1]?.charAt(0) || ''}`;
-      
-      console.log('User Info:', decodedToken);
-  
-      // Kullanıcı statülerini getirirken "Offline" seçeneğini filtreleyelim
+
       this.userStatusService.getAllUserStatus().subscribe(response => {
         if (response.success) {
           this.userStatusList = response.data.filter((status: string) => status !== 'Offline');
-          console.log("Kullanıcı Statüleri:", this.userStatusList);
         }
       });
     } else {
-      console.error('JWT token bulunamadı!');
+      console.error('JWT token not found!');
     }
-  }
-
-  onStatusChange(): void {
-    console.log("Seçilen statü:", this.selectedUserStatus);
   }
 
   openUserPopup() {
@@ -59,25 +48,33 @@ export class DashboardComponent {
   }
 
   openStatusPopup() {
-    this.isStatusPopupOpen = !this.isStatusPopupOpen;  // Bu fonksiyonu ekliyoruz
+    this.isStatusPopupOpen = !this.isStatusPopupOpen;
   }
 
   onStatusSelect(status: string): void {
-    this.selectedUserStatus = status.toUpperCase();  // Statüyü büyük harfe çeviriyoruz
+    this.selectedUserStatus = status.toUpperCase();
     this.userStatus = this.selectedUserStatus;
     this.isStatusPopupOpen = false;
-  
-    // Statü değişikliği backend'e büyük harf olarak gönderiliyor
+
+    const userCircleElement = document.querySelector('.user-circle') as HTMLElement | null;
+    if (userCircleElement) {
+      const statusColors: { [key: string]: string } = {
+        ONLINE: '#00ff87',
+        BUSY: '#ff4136',
+        AWAY: '#ffdb58'
+      };
+      const color = statusColors[this.selectedUserStatus];
+      if (color) {
+        userCircleElement.style.backgroundColor = color;
+      }
+    }
+
     this.userService.updateUserStatus(this.selectedUserStatus).subscribe(response => {
       if (response.success) {
-        console.log("Statü başarıyla güncellendi:", this.selectedUserStatus);
+        console.log("Status updated successfully!:", this.selectedUserStatus);
       } else {
-        console.error("Statü güncelleme hatası:", response.message);
+        console.error("Status update error:", response.message);
       }
     });
-  }
-
-  toggleStatusDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
   }
 }
