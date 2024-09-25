@@ -2,7 +2,7 @@
   background-color: #16262c;
   display: flex;
   align-items: center;
-  justify-content: flex-start;  // Sol tarafa hizala
+  justify-content: flex-start;
   padding: 10px 20px;
 
   .logo {
@@ -14,7 +14,7 @@
     font-weight: bold;
     color: #ffffff;
     font-family: 'Rubik', sans-serif;
-    margin-left: 5px;  // İkon ile metin arasına boşluk bırak
+    margin-left: 5px;
   }
 
   .user-circle {
@@ -37,7 +37,7 @@
     }
 
     &:hover {
-      background-color: #7BD3EA;  /* Uyumlu daha koyu bir arka plan rengi */
+      background-color: #7BD3EA;
     }
   }
 }
@@ -53,10 +53,10 @@
   color: #00ff87;
 
   img.user-icon {
-    width: 50px;  /* İkon boyutu */
+    width: 50px;
     height: 50px;
     display: block;
-    margin: 0 auto 10px auto;  /* İkonu ortalar ve altına boşluk bırakır */
+    margin: 0 auto 10px auto;
   }
 
   p {
@@ -70,54 +70,116 @@
     p {
       margin-right: 10px;
       font-size: 14px;
-      color: #00ff87;  /* Mevcut durum yazısı */
-    }
-
-    select {
-      display: none;  // Select'i kaldırdık, yeni popup üzerinden işlem yapılacak
-    }
-  }
-}
-
-// Yeni status popup stilini ekleyelim
-.status-popup {
-  position: absolute;
-  right: 20px;
-  top: 150px;
-  background-color: #16262c;
-  padding: 15px;
-  border-radius: 8px;
-  color: #00ff87;
-
-  h3 {
-    text-align: center;
-    margin-bottom: 10px;
-    color: #ffffff;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      background-color: #16262c;
       color: #00ff87;
-      border: 1px solid #00ff87;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 5px;
-      text-align: center;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    }
 
+    .status-change-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 25px;
+      height: 25px;
+      border: 2px solid #00ff87; /* Çerçeve rengi */
+      border-radius: 5px;
+      color: #00ff87;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+  
       &:hover {
-        background-color: #00ff87;
+        background-color: #00ff87; /* İkon arka planı hover durumunda değişir */
         color: #16262c;
       }
     }
   }
-}
+  }
 
+
+  .status-popup {
+    position: absolute;
+    right: 20px;
+    top: 240px;
+    background-color: #0a1c29;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px;
+    color: #00ff87;
+  
+    ul.status-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+      li.status-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border: 2px solid; /* Duruma göre border rengi */
+        padding: 5px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+  
+        .status-circle {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+  
+        .status-text {
+          flex-grow: 1;
+          text-align: center;
+          font-weight: bold; /* Yazıları belirginleştirir */
+        }
+  
+        &.online-status {
+          border-color: #00ff87;
+          color: #00ff87;
+  
+          .status-circle {
+            background-color: #00ff87;
+          }
+  
+          &:hover {
+            background-color: #00ff87;
+            color: #0a1c29;
+          }
+        }
+  
+        &.busy-status {
+          border-color: #ff4136;
+          color: #ff4136;
+  
+          .status-circle {
+            background-color: #ff4136;
+          }
+  
+          &:hover {
+            background-color: #ff4136;
+            color: #0a1c29;
+          }
+        }
+  
+        &.away-status {
+          border-color: #ffdb58;
+          color: #ffdb58;
+  
+          .status-circle {
+            background-color: #ffdb58;
+          }
+  
+          &:hover {
+            background-color: #ffdb58;
+            color: #0a1c29;
+          }
+        }
+      }
+    }
+  }
+  
+  
 .dashboard-container {
   display: flex;
   justify-content: center;
