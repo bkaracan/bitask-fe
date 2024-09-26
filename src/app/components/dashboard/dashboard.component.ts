@@ -73,6 +73,35 @@ export class DashboardComponent {
         userCircleElement.style.backgroundColor = color;
       }
     }
+    
+    // Statü metninin rengini değiştirme
+    const statusTextElement = document.querySelector('.status-container p') as HTMLElement | null;
+    if (statusTextElement) {
+      const statusTextColors: { [key: string]: string } = {
+        ONLINE: '#00ff87',
+        BUSY: '#ff4136',
+        AWAY: '#ffdb58'
+      };
+      const textColor = statusTextColors[this.selectedUserStatus];
+      if (textColor) {
+        statusTextElement.className = `${this.selectedUserStatus.toLowerCase()}-status`; // Duruma göre sınıf ekleme
+      }
+    }
+
+    // Statü değiştirme ikonunun rengini değiştirme
+    const statusIconElement = document.querySelector('.status-change-icon') as HTMLElement | null;
+    if (statusIconElement) {
+      const statusIconColors: { [key: string]: string } = {
+        ONLINE: '#00ff87',
+        BUSY: '#ff4136',
+        AWAY: '#ffdb58'
+      };
+      const iconColor = statusIconColors[this.selectedUserStatus];
+      if (iconColor) {
+        statusIconElement.style.color = iconColor;
+        statusIconElement.style.borderColor = iconColor;
+      }
+    }
 
     this.userService.updateUserStatus(this.selectedUserStatus).subscribe(response => {
       if (response.success) {
