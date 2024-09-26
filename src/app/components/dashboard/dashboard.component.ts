@@ -86,7 +86,7 @@ export class DashboardComponent {
   logout() {
     this.authService.logout().subscribe(() => {
       // Başarıyla çıkış yapıldığında anasayfaya yönlendir
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
       localStorage.removeItem('jwtToken'); // JWT'yi temizle
     }, error => {
       console.error('Logout failed', error);
