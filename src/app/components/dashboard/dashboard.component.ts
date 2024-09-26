@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { UserStatusService } from 'src/app/services/user-status.service';
 import { UserDTO } from 'src/app/models/user.dto';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +21,10 @@ export class DashboardComponent {
   isUserPopupOpen: boolean = false;
   isStatusPopupOpen: boolean = false;
 
-  constructor(private userService: UserService, private userStatusService: UserStatusService) {}
+  constructor(private userService: UserService, 
+    private userStatusService: UserStatusService,
+    private authService: AuthenticationService,
+    private router: Router) {}
 
   ngOnInit() {
     const token = localStorage.getItem('jwtToken');
@@ -75,6 +80,16 @@ export class DashboardComponent {
       } else {
         console.error("Status update error:", response.message);
       }
+    });
+  }
+
+  logout() {
+    this.authService.logout().subscribe(() => {
+      // Başarıyla çıkış yapıldığında anasayfaya yönlendir
+      this.router.navigate(['/login']);
+      localStorage.removeItem('jwtToken'); // JWT'yi temizle
+    }, error => {
+      console.error('Logout failed', error);
     });
   }
 }

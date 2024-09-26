@@ -1,8 +1,15 @@
 <div class="navbar">
   <img src="assets/bitaskicon.png" alt="BiTASK Icon" class="logo" />
   <span class="title">BiTASK</span>
-  <div class="user-circle" (click)="openUserPopup()">
-    <span class="user-initials">{{ userInitials }}</span>
+  <div class="user-info-container">
+    <div class="user-circle" (click)="openUserPopup()">
+      <span class="user-initials">{{ userInitials }}</span>
+    </div>
+    <!-- Logout Button -->
+    <div class="logout-container">
+      <img src="assets/logouticon.png" alt="Logout Icon" class="logout-icon" />
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
   </div>
 </div>
 
