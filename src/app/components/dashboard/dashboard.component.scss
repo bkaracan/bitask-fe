@@ -33,7 +33,7 @@
     align-items: center;
     cursor: pointer;
     margin-left: auto;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
     .user-initials {
       color: #16262c;
@@ -44,6 +44,7 @@
 
     &:hover {
       background-color: #7bd3ea;
+      transform: scale(1.1);
     }
   }
 
@@ -103,7 +104,20 @@
     p {
       margin-right: 10px;
       font-size: 14px;
-      color: #00ff87;
+      color: #00ff87; /* Default olarak Online rengini ayarlıyoruz */
+      transition: color 0.3s ease; /* Renk geçişleri için smooth animasyon */
+      
+      &.online-status {
+        color: #00ff87; /* Online durumu için yeşil */
+      }
+  
+      &.busy-status {
+        color: #ff4136; /* Busy (Meşgul) durumu için kırmızı */
+      }
+  
+      &.away-status {
+        color: #ffdb58; /* Away (Uzakta) durumu için sarı */
+      }
     }
 
     .status-change-icon {
