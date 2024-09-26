@@ -5,6 +5,7 @@ import { RegistrationRequestDTO } from '../models/registration-request.dto';
 import { AuthenticationRequestDTO } from '../models/authentication-request.dto';
 import { PasswordResetRequestDTO } from '../models/password-reset-request.dto';
 import { HttpParams } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +43,21 @@ export class AuthenticationService {
     
       return this.http.post<any>(`${this.apiUrl}/forgot-password`, null, { params });
     }
+
+    // Logout metodu
+  logout(): Observable<any> {
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      return this.http.post(`${this.apiUrl}/logout`, null, { headers });
+    } else {
+      console.error('JWT token not found!');
+      return new Observable(observer => {
+        observer.error('JWT token not found');
+      });
+    }
+  }
     
   }
