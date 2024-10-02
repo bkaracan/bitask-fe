@@ -105,7 +105,12 @@
   <p class="message">Your registration was successful. A 6-digit code has been sent to your email address. Please enter the code below to activate your account.</p>
   <div class="p-field">
     <input id="activationCode" type="password" pInputText [(ngModel)]="activationCode" maxlength="6" [ngClass]="{'error-border': isInvalidCode}" />
+    
+    <!-- Yanlış kod mesajı -->
     <div *ngIf="isInvalidCode" class="error-message">The code you entered is incorrect!</div>
+    
+    <!-- Süresi dolmuş token mesajı -->
+    <div *ngIf="isExpiredCode" class="error-message">The code has expired! A new token has been sent to the same email address.</div>
   </div>
   <div class="dialog-actions">
     <button pButton type="button" label="Activate my account" (click)="activateAccount()"></button>
