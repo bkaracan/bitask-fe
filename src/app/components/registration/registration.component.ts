@@ -14,6 +14,7 @@ export class RegistrationComponent {
   jobTitles: any[] = [];
   displayModal: boolean = false; // Başlangıçta false olmalı
   isInvalidCode: boolean = false;
+  isExpiredCode: boolean = false;
   activationCode: string = '';
   successModal: boolean = false;
   showPasswordPopup: boolean = false;
@@ -131,32 +132,48 @@ export class RegistrationComponent {
   activateAccount() {
     if (this.activationCode.length !== 6) {
       this.isInvalidCode = true;
+      this.isExpiredCode = false; // Eğer kod uzunluğu hatalıysa süresi dolmuş mesajını sıfırla
       return;
     }
-
+  
+    // Aktivasyon isteği
     this.authService.activateAccount(this.activationCode).subscribe(
       response => {
-        if (response.success) {
+        // Eğer response success değilse, hataları burada yönetiyoruz
+        if (!response.success) {
+          const backendErrorMessage = response?.data?.error;
+  
+          // Token süresi dolmuşsa
+          if (backendErrorMessage && backendErrorMessage.includes("Activation token has expired")) {
+            this.isExpiredCode = true;  // Süresi dolmuş kod için
+            this.isInvalidCode = false; // Yanlış kod mesajını sıfırla
+          } else {
+            // Eğer başka bir hata mesajı gelmişse yanlış kod hatası göster
+            this.isInvalidCode = true;
+            this.isExpiredCode = false; // Süresi dolmuş mesajını sıfırla
+          }
+        } else {
           console.log('Account activated successfully', response);
           this.displayModal = false;
           this.isInvalidCode = false;
+          this.isExpiredCode = false; // Başarılı olduğunda her iki hata durumunu da sıfırla
           this.successModal = true;
-
-          // 3 saniye sonra otomatik olarak login sayfasına yönlendir
+  
+          // Başarı mesajından sonra login sayfasına yönlendir
           setTimeout(() => {
             this.closeSuccessModal();
           }, 3000);
-        } else {
-          console.error('Account activation failed', response);
-          this.isInvalidCode = true;
         }
       },
       error => {
         console.error('Account activation failed', error);
+        // Eğer network veya sunucuya ulaşamama gibi genel bir hata oluşursa buraya düşecektir.
         this.isInvalidCode = true;
+        this.isExpiredCode = false;
       }
     );
   }
+  
 
   closeSuccessModal() {
     this.successModal = false;
