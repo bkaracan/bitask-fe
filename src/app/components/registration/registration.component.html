@@ -9,91 +9,167 @@
   <div class="right-section">
     <div class="registration-container">
       <div class="card">
-        <img src="assets/signupicon.png" alt="Sign Up Logo" class="signup-icon" />
+        <img
+          src="assets/signupicon.png"
+          alt="Sign Up Logo"
+          class="signup-icon"
+        />
         <h2>Create your account</h2>
         <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-
           <div class="p-field">
             <label for="firstName">First Name</label>
-            <input id="firstName" type="text" pInputText formControlName="firstName" />
+            <input
+              id="firstName"
+              type="text"
+              pInputText
+              formControlName="firstName"
+            />
           </div>
           <div class="p-field">
             <label for="lastName">Last Name</label>
-            <input id="lastName" type="text" pInputText formControlName="lastName" />
+            <input
+              id="lastName"
+              type="text"
+              pInputText
+              formControlName="lastName"
+            />
           </div>
           <div class="p-field">
             <label for="email">Email</label>
-            <input id="email" 
-                   type="email" 
-                   pInputText 
-                   formControlName="email" 
-                   [ngClass]="{ 'error-border': emailExistsError }" />
+            <input
+              id="email"
+              type="email"
+              pInputText
+              formControlName="email"
+              [ngClass]="{ 'error-border': emailExistsError }"
+            />
             <!-- Email zaten varsa gösterilecek hata mesajı -->
-            <small *ngIf="emailExistsError" class="p-error">This email already exists!</small>
+            <small *ngIf="emailExistsError" class="p-error"
+              >This email already exists!</small
+            >
           </div>
           <div class="p-field">
             <label for="password">Password</label>
-            <input id="password" type="password" pInputText formControlName="password" 
-                   (focus)="showPasswordPopup = true" 
-                   (input)="checkPasswordStrength(registrationForm.get('password')?.value)" />
+            <input
+              id="password"
+              type="password"
+              pInputText
+              formControlName="password"
+              (focus)="showPasswordPopup = true"
+              (input)="
+                checkPasswordStrength(registrationForm.get('password')?.value)
+              "
+            />
           </div>
 
           <!-- Şifre kriterleri pop-up -->
           <div class="password-popup" *ngIf="showPasswordPopup">
             <ng-container *ngIf="!isPasswordValid(); else successMessage">
-              <p [ngClass]="{ 'valid': passwordValidations.hasMinLength, 'invalid': !passwordValidations.hasMinLength }">
-                <i *ngIf="passwordValidations.hasMinLength" class="pi pi-check"></i>
+              <p
+                [ngClass]="{
+                  valid: passwordValidations.hasMinLength,
+                  invalid: !passwordValidations.hasMinLength
+                }"
+              >
+                <i
+                  *ngIf="passwordValidations.hasMinLength"
+                  class="pi pi-check"
+                ></i>
                 Must be at least 8 characters
               </p>
-              <p [ngClass]="{ 'valid': passwordValidations.hasUppercase, 'invalid': !passwordValidations.hasUppercase }">
-                <i *ngIf="passwordValidations.hasUppercase" class="pi pi-check"></i>
+              <p
+                [ngClass]="{
+                  valid: passwordValidations.hasUppercase,
+                  invalid: !passwordValidations.hasUppercase
+                }"
+              >
+                <i
+                  *ngIf="passwordValidations.hasUppercase"
+                  class="pi pi-check"
+                ></i>
                 Must contain at least one uppercase letter
               </p>
-              <p [ngClass]="{ 'valid': passwordValidations.hasSpecialChar, 'invalid': !passwordValidations.hasSpecialChar }">
-                <i *ngIf="passwordValidations.hasSpecialChar" class="pi pi-check"></i>
+              <p
+                [ngClass]="{
+                  valid: passwordValidations.hasSpecialChar,
+                  invalid: !passwordValidations.hasSpecialChar
+                }"
+              >
+                <i
+                  *ngIf="passwordValidations.hasSpecialChar"
+                  class="pi pi-check"
+                ></i>
                 Must contain at least one special character
               </p>
             </ng-container>
-          
+
             <!-- Tüm koşullar sağlandığında gösterilecek mesaj -->
             <ng-template #successMessage>
-              <p class="success-message">
-                Password conditions are met!
-              </p>
+              <p class="success-message">Password conditions are met!</p>
             </ng-template>
           </div>
-          
 
           <div class="p-field">
             <label for="confirmPassword">Retype Password</label>
-            <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" 
-                   placeholder="Please retype your password" 
-                   (input)="checkPasswordMatch()" />
+            <input
+              id="confirmPassword"
+              type="password"
+              pInputText
+              formControlName="confirmPassword"
+              placeholder="Please retype your password"
+              (input)="checkPasswordMatch()"
+            />
             <!-- Şifreler eşleşmediğinde hata mesajı -->
-            <small *ngIf="!passwordsMatch && registrationForm.get('confirmPassword')?.touched" class="p-error">
+            <small
+              *ngIf="
+                !passwordsMatch &&
+                registrationForm.get('confirmPassword')?.touched
+              "
+              class="p-error"
+            >
               Passwords don't match!
             </small>
             <!-- Şifreler eşleştiğinde başarı mesajı -->
-            <small *ngIf="passwordsMatch && registrationForm.get('confirmPassword')?.touched" class="p-success">
+            <small
+              *ngIf="
+                passwordsMatch &&
+                registrationForm.get('confirmPassword')?.touched
+              "
+              class="p-success"
+            >
               Passwords match!
             </small>
           </div>
-          
 
           <div class="p-field">
             <label for="jobTitleId">Job Title</label>
-            <p-dropdown [options]="jobTitles" formControlName="jobTitleId" placeholder="Select a Job Title"></p-dropdown>
+            <p-dropdown
+              [options]="jobTitles"
+              formControlName="jobTitleId"
+              placeholder="Select a Job Title"
+            ></p-dropdown>
           </div>
 
           <div class="p-field">
             <label for="dateOfBirth">Date of Birth</label>
-            <p-calendar id="dateOfBirth" formControlName="dateOfBirth" [showIcon]="true"></p-calendar>
+            <p-calendar
+              id="dateOfBirth"
+              formControlName="dateOfBirth"
+              [showIcon]="true"
+            ></p-calendar>
           </div>
 
           <!-- Butonun disable durumunu kontrol etmek için -->
-          <button pButton type="submit" label="Register" 
-                  [disabled]="!isFormValid()" 
-                  [ngClass]="{ 'disabled-btn': !isFormValid(), 'enabled-btn': isFormValid() }"></button>
+          <button
+            pButton
+            type="submit"
+            label="Register"
+            [disabled]="!isFormValid()"
+            [ngClass]="{
+              'disabled-btn': !isFormValid(),
+              'enabled-btn': isFormValid()
+            }"
+          ></button>
         </form>
       </div>
     </div>
@@ -101,31 +177,74 @@
 </div>
 
 <!-- Kayıt Başarılı Pop-up -->
-<p-dialog header="Registration Successful" [(visible)]="displayModal" [modal]="true" [closable]="true" class="activation-dialog">
-  <p class="message">Your registration was successful. A 6-digit code has been sent to your email address. Please enter the code below to activate your account.</p>
+<p-dialog
+  header="Registration Successful"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [closable]="true"
+  class="activation-dialog"
+>
+  <p class="message">
+    Your registration was successful. A 6-digit code has been sent to your email
+    address. Please enter the code below to activate your account.
+  </p>
+  <i
+    class="pi pi-stopwatch"
+    [ngStyle]="{ color: countdownExpired ? 'red' : 'green' }"
+  >
+    {{ formattedCountdown }}
+  </i>
   <div class="p-field">
-    <input id="activationCode" type="password" pInputText [(ngModel)]="activationCode" maxlength="6" [ngClass]="{'error-border': isInvalidCode}" />
-    
+    <input
+      id="activationCode"
+      type="password"
+      pInputText
+      [(ngModel)]="activationCode"
+      maxlength="6"
+      [ngClass]="{ 'error-border': isInvalidCode }"
+    />
+
     <!-- Yanlış kod mesajı -->
-    <div *ngIf="isInvalidCode" class="error-message">The code you entered is incorrect!</div>
-    
+    <div *ngIf="isInvalidCode" style="color: red">
+      The code you entered is incorrect!
+    </div>
+
     <!-- Süresi dolmuş token mesajı -->
-    <div *ngIf="isExpiredCode" class="error-message">The code has expired! A new token has been sent to the same email address.</div>
+    <div *ngIf="isExpiredCode" class="error-message" style="color: red">
+      The code has expired! A new token has been sent to the same email address.
+    </div>
   </div>
   <div class="dialog-actions">
-    <button pButton type="button" label="Activate my account" (click)="activateAccount()"></button>
+    <button
+      pButton
+      type="button"
+      label="Activate my account"
+      (click)="activateAccount()"
+    ></button>
   </div>
 </p-dialog>
 
 <!-- Hesap Aktifleştirildi Pop-up -->
-<p-dialog [(visible)]="successModal" [modal]="true" [closable]="false" class="success-dialog">
+<p-dialog
+  [(visible)]="successModal"
+  [modal]="true"
+  [closable]="false"
+  class="success-dialog"
+>
   <div class="success-content">
     <div class="success-icon">
       <i class="pi pi-check"></i>
     </div>
-    <p class="success-message">Account activated successfully! You're redirecting to the login page.</p>
+    <p class="success-message" style="color: green">
+      Account activated successfully! You're redirecting to the login page.
+    </p>
   </div>
   <div class="dialog-actions">
-    <button pButton type="button" label="Go to login page" (click)="closeSuccessModal()"></button>
+    <button
+      pButton
+      type="button"
+      label="Go to login page"
+      (click)="closeSuccessModal()"
+    ></button>
   </div>
 </p-dialog>
