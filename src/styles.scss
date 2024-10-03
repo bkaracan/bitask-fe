@@ -1,6 +1,12 @@
+@import "primeicons/primeicons.css";
+
 /* You can add global styles to this file, and also import other style files */
 body {
   margin: 0 !important;
   padding: 0;
   box-sizing: border-box;
+}
+
+.error-message {
+  color: red;
 }
