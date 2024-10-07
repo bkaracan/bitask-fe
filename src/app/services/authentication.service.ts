@@ -52,11 +52,8 @@ export class AuthenticationService {
     });
   }
 
-  resendActivationCode(token: string): Observable<any> {
-    const params = new HttpParams().set('token', token); // Token parametresini HttpParams ile ekledik
-    return this.http.post(`${this.apiUrl}/resend-activation-code`, null, {
-      params,
-    });
+  resendActivationCode(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/resend-activation-code`, { email });
   }
 
   // Logout metodu
