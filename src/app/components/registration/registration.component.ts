@@ -25,7 +25,7 @@ export class RegistrationComponent {
   formattedCountdown: string = '01:00';
   countdownExpired: boolean = false;
   private countdownInterval: any;
-  token: string = '';
+  email: string = '';
 
   // Şifre validasyonu için kontroller
   passwordValidations = {
@@ -114,8 +114,7 @@ export class RegistrationComponent {
         (response) => {
           console.log('Registration successful', response);
           if (response.success) {
-            this.token = response.data.token; // Token'ı kaydedin
-            console.log('Token atandı:', this.token);
+            this.email = response.data.email; // E-postayı kaydedin
             this.displayModal = true;
             this.startCountdown();
             this.emailExistsError = false;
@@ -225,8 +224,8 @@ export class RegistrationComponent {
   // Geri sayımı yeniden başlatma
   resendActivationCode() {
     this.stopCountdown();
-    console.log('Resending activation code for token:', this.token);
-    this.authService.resendActivationCode(this.token).subscribe(
+    console.log('Resending activation code for email:', this.email); // E-posta adresini logluyoruz
+    this.authService.resendActivationCode(this.email).subscribe(
       (response) => {
         console.log('Yeni aktivasyon kodu gönderildi', response);
         this.isExpiredCode = false;
