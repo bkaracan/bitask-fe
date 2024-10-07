@@ -1,4 +1,3 @@
-<!-- login.component.html -->
 <div class="page-wrapper">
   <!-- Header Section -->
   <div class="header">
@@ -120,7 +119,12 @@
         </div>
 
         <!-- Submit Button -->
-        <button pButton type="submit" label="Login" class="login-button"></button>
+        <button
+          pButton
+          type="submit"
+          label="Login"
+          class="login-button"
+        ></button>
         <p class="forgot-password">
           <a href="#" (click)="openForgotPasswordPopup($event)">
             Forgot password?
@@ -145,10 +149,17 @@
         placeholder="Enter your email address"
       />
       <div class="dialog-actions">
-        <button pButton type="button" label="Send Reset Code" (click)="sendResetCode()"></button>
+        <button
+          pButton
+          type="button"
+          label="Send Reset Code"
+          (click)="sendResetCode()"
+          [disabled]="!countdownExpired"
+        ></button>
       </div>
       <div *ngIf="codeSent" class="success-message">
-        <i class="pi pi-check-circle"></i> A password reset code has been sent to your email.
+        <i class="pi pi-check-circle"></i> A password reset code has been sent
+        to your email.
       </div>
 
       <!-- Code Verification Pop-up -->
@@ -161,14 +172,42 @@
           pInputText
           placeholder="Enter your reset code"
         />
+        <div *ngIf="!countdownExpired" style="color: green">
+          The reset code will be expired in {{ formattedCountdown }}
+          <i
+            class="pi pi-stopwatch"
+            [ngStyle]="{
+              color: countdownExpired ? 'red' : 'green',
+              'margin-left': '5px'
+            }"
+          ></i>
+        </div>
+        <div *ngIf="countdownExpired" style="color: red">
+          The reset code has expired!
+          <button
+            pButton
+            type="button"
+            class="resend-code-btn"
+            (click)="sendResetCode()"
+          >
+            Re-send code
+            <img src="assets/resendicon.png" alt="Resend Icon" />
+          </button>
+        </div>
         <div class="dialog-actions">
-          <button pButton type="button" label="Verify Code" (click)="verifyCode()"></button>
+          <button
+            pButton
+            type="button"
+            label="Verify Code"
+            (click)="verifyCode()"
+          ></button>
         </div>
         <div *ngIf="isCodeIncorrect" class="error-message">
           <i class="pi pi-times-circle"></i> {{ errorMessage }}
         </div>
         <div *ngIf="isCodeCorrect" class="success-message">
-          <i class="pi pi-check-circle"></i> Code verified! Redirecting to set a new password...
+          <i class="pi pi-check-circle"></i> Code verified! Redirecting to set a
+          new password...
         </div>
       </div>
     </p-dialog>
