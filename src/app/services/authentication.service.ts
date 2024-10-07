@@ -25,39 +25,53 @@ export class AuthenticationService {
 
   activateAccount(token: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/activate-account?token=${token}`);
-    
-    }
+  }
 
-    sendResetPasswordCode(email: string): Observable<any> {
-      return this.http.post(`${this.apiUrl}/forgot-password?email=${email}`, null);
-    }
+  sendResetPasswordCode(email: string): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/forgot-password?email=${email}`,
+      null
+    );
+  }
 
-    resetPassword(token: string, request: PasswordResetRequestDTO): Observable<any> {
-      return this.http.post(`${this.apiUrl}/reset-password?token=${token}`, request);
-    }
+  resetPassword(
+    token: string,
+    request: PasswordResetRequestDTO
+  ): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/reset-password?token=${token}`,
+      request
+    );
+  }
 
-    verifyResetCode(email: string, resetCode: string): Observable<any> {
-      const params = new HttpParams()
-        .set('email', email)
-        .set('token', resetCode); // 'resetCode' yerine 'token' kullanıyoruz
-    
-      return this.http.post<any>(`${this.apiUrl}/forgot-password`, null, { params });
-    }
+  verifyResetCode(email: string, resetCode: string): Observable<any> {
+    const params = new HttpParams().set('email', email).set('token', resetCode); // 'resetCode' yerine 'token' kullanıyoruz
 
-    // Logout metodu
+    return this.http.post<any>(`${this.apiUrl}/forgot-password`, null, {
+      params,
+    });
+  }
+
+  resendActivationCode(token: string): Observable<any> {
+    const params = new HttpParams().set('token', token); // Token parametresini HttpParams ile ekledik
+    return this.http.post(`${this.apiUrl}/resend-activation-code`, null, {
+      params,
+    });
+  }
+
+  // Logout metodu
   logout(): Observable<any> {
     const token = localStorage.getItem('jwtToken');
     if (token) {
       const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       });
       return this.http.post(`${this.apiUrl}/logout`, null, { headers });
     } else {
       console.error('JWT token not found!');
-      return new Observable(observer => {
+      return new Observable((observer) => {
         observer.error('JWT token not found');
       });
     }
   }
-    
-  }
+}
