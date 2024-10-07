@@ -24,6 +24,8 @@ export class RegistrationComponent {
   countdown = 60;
   formattedCountdown: string = '01:00';
   countdownExpired: boolean = false;
+  private countdownInterval: any;
+  token: string = '';
 
   // Şifre validasyonu için kontroller
   passwordValidations = {
@@ -112,40 +114,30 @@ export class RegistrationComponent {
         (response) => {
           console.log('Registration successful', response);
           if (response.success) {
-            // Başarılı ise aktivasyon kodu popup'ını göster
+            this.token = response.data.token; // Token'ı kaydedin
+            console.log('Token atandı:', this.token);
             this.displayModal = true;
-            const val = setInterval(() => {
-              this.countdown--;
-              this.formattedCountdown = this.formatCountdown();
-              if (this.countdown === 0) {
-                clearInterval(val);
-                this.countdownExpired = true;
-              }
-            }, 1000);
+            this.startCountdown();
             this.emailExistsError = false;
             this.generalErrorMessage = null;
           } else if (
             response.code === 400 &&
             response.message === 'Email already exists!'
           ) {
-            // Email zaten mevcutsa, emailExistsError flag'ini true yap ve hata mesajını göster
             this.emailExistsError = true;
             this.generalErrorMessage = response.message;
           } else {
-            // Diğer genel hatalar için genel hata mesajı
             this.generalErrorMessage = 'Registration failed. Please try again.';
             console.error('Registration failed', response);
           }
         },
         (error) => {
-          // API çağrısında bir hata olursa genel hata mesajını göster
           console.error('Error during registration', error);
           this.generalErrorMessage =
             'An error occurred. Please try again later.';
         }
       );
     } else {
-      // Form geçerli değilse, tüm alanlar dokunulmuş olarak işaretlenir ve hata mesajları gösterilir
       Object.keys(this.registrationForm.controls).forEach((field) => {
         const control = this.registrationForm.get(field);
         if (control) {
@@ -208,6 +200,43 @@ export class RegistrationComponent {
     this.router.navigate(['/login']); // Login sayfasına yönlendirme
   }
 
+  // Geri sayım başlatma
+  startCountdown() {
+    this.countdown = 60;
+    this.countdownExpired = false;
+    this.formattedCountdown = this.formatCountdown();
+    this.countdownInterval = setInterval(() => {
+      this.countdown--;
+      this.formattedCountdown = this.formatCountdown();
+      if (this.countdown === 0) {
+        clearInterval(this.countdownInterval);
+        this.countdownExpired = true;
+      }
+    }, 1000);
+  }
+
+  // Geri sayımı durdurma
+  stopCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+  }
+
+  // Geri sayımı yeniden başlatma
+  resendActivationCode() {
+    this.stopCountdown();
+    console.log('Resending activation code for token:', this.token);
+    this.authService.resendActivationCode(this.token).subscribe(
+      (response) => {
+        console.log('Yeni aktivasyon kodu gönderildi', response);
+        this.isExpiredCode = false;
+        this.startCountdown();
+      },
+      (error) => {
+        console.error('Yeni aktivasyon kodu gönderme hatası', error);
+      }
+    );
+  }
   formatCountdown(): string {
     const minutes = Math.floor(this.countdown / 60);
     const seconds = this.countdown % 60;

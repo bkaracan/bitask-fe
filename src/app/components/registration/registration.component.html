@@ -176,52 +176,72 @@
   </div>
 </div>
 
-<!-- Kayıt Başarılı Pop-up -->
+<!-- Başarılı Kayıt Pop-up -->
 <p-dialog
-  header="Registration Successful"
+  header="Registration Successful!"
   [(visible)]="displayModal"
   [modal]="true"
   [closable]="true"
   class="activation-dialog"
 >
-  <p class="message">
-    Your registration was successful. A 6-digit code has been sent to your email
-    address. Please enter the code below to activate your account.
-  </p>
-  <i
-    class="pi pi-stopwatch"
-    [ngStyle]="{ color: countdownExpired ? 'red' : 'green' }"
-  >
-    {{ formattedCountdown }}
-  </i>
-  <div class="p-field">
-    <input
-      id="activationCode"
-      type="password"
-      pInputText
-      [(ngModel)]="activationCode"
-      maxlength="6"
-      [ngClass]="{ 'error-border': isInvalidCode }"
-    />
+  <!-- Süre dolmamışsa sayaç ve aktivasyon kodu alanını göster -->
+  <ng-container *ngIf="!countdownExpired">
+    <p class="message">
+      Your registration was successful. A 6-digit code has been sent to your
+      email address. Please enter the code below to activate your account.
+    </p>
+    <span style="color: #333; margin-right: 5px"
+      >The activation code will expire in</span
+    >
+    <span [ngStyle]="{ color: countdownExpired ? 'red' : 'green' }">{{
+      formattedCountdown
+    }}</span>
+    <i
+      class="pi pi-stopwatch"
+      [ngStyle]="{
+        color: countdownExpired ? 'red' : 'green',
+        'margin-left': '5px'
+      }"
+    ></i>
 
-    <!-- Yanlış kod mesajı -->
-    <div *ngIf="isInvalidCode" style="color: red">
-      The code you entered is incorrect!
+    <div class="p-field">
+      <input
+        id="activationCode"
+        type="password"
+        pInputText
+        [(ngModel)]="activationCode"
+        maxlength="6"
+        [ngClass]="{ 'error-border': isInvalidCode }"
+      />
+      <div *ngIf="isInvalidCode" style="color: red">
+        The code you entered is incorrect!
+      </div>
+      <div *ngIf="isExpiredCode" class="error-message" style="color: red">
+        The code has expired! A new token has been sent to the same email
+        address.
+      </div>
     </div>
+    <div class="dialog-actions">
+      <button
+        pButton
+        type="button"
+        label="Activate my account"
+        (click)="activateAccount()"
+      ></button>
+    </div>
+  </ng-container>
 
-    <!-- Süresi dolmuş token mesajı -->
-    <div *ngIf="isExpiredCode" class="error-message" style="color: red">
-      The code has expired! A new token has been sent to the same email address.
-    </div>
-  </div>
-  <div class="dialog-actions">
+  <!-- Süre dolmuşsa yeniden aktivasyon kodu gönder butonunu göster -->
+  <ng-container *ngIf="countdownExpired">
+    <p style="color: red; margin-bottom: 15px">
+      The activation token has expired
+    </p>
     <button
       pButton
-      type="button"
-      label="Activate my account"
-      (click)="activateAccount()"
+      label="Re-send the new activation code"
+      (click)="resendActivationCode()"
     ></button>
-  </div>
+  </ng-container>
 </p-dialog>
 
 <!-- Hesap Aktifleştirildi Pop-up -->
