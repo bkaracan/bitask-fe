@@ -11,7 +11,7 @@ import { PasswordResetRequestDTO } from '../models/password-reset-request.dto';
 export class AuthenticationService {
   private readonly apiUrl = 'http://localhost:8088/api/v1/auth'; // Backend URL'i
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   register(registrationData: RegistrationRequestDTO): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, registrationData);
