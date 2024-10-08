@@ -67,9 +67,7 @@ export class DashboardComponent {
     this.userStatus = this.selectedUserStatus;
     this.isStatusPopupOpen = false;
 
-    const userCircleElement = document.querySelector(
-      '.user-circle'
-    ) as HTMLElement | null;
+    const userCircleElement = document.querySelector('.user-circle');
     if (userCircleElement) {
       const statusColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
@@ -78,14 +76,12 @@ export class DashboardComponent {
       };
       const color = statusColors[this.selectedUserStatus];
       if (color) {
-        userCircleElement.style.backgroundColor = color;
+        (userCircleElement as HTMLElement).style.backgroundColor = color;
       }
     }
 
     // Statü metninin rengini değiştirme
-    const statusTextElement = document.querySelector(
-      '.status-container p'
-    ) as HTMLElement | null;
+    const statusTextElement = document.querySelector('.status-container p');
     if (statusTextElement) {
       const statusTextColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
@@ -99,9 +95,7 @@ export class DashboardComponent {
     }
 
     // Statü değiştirme ikonunun rengini değiştirme
-    const statusIconElement = document.querySelector(
-      '.status-change-icon'
-    ) as HTMLElement | null;
+    const statusIconElement = document.querySelector('.status-change-icon');
     if (statusIconElement) {
       const statusIconColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
@@ -110,8 +104,8 @@ export class DashboardComponent {
       };
       const iconColor = statusIconColors[this.selectedUserStatus];
       if (iconColor) {
-        statusIconElement.style.color = iconColor;
-        statusIconElement.style.borderColor = iconColor;
+        (statusIconElement as HTMLElement).style.color = iconColor;
+        (statusIconElement as HTMLElement).style.borderColor = iconColor;
       }
     }
 
