@@ -27,9 +27,9 @@ export class LoginComponent {
   private countdownInterval: any;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthenticationService,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthenticationService,
+    private readonly router: Router
   ) {
     this.loginForm = this.fb.group({
       email: [
