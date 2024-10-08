@@ -4,13 +4,12 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss']
+  styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent implements OnInit {
+  showButtons: boolean = false; // Butonların gösterilip gösterilmeyeceğini kontrol eden flag
 
-  showButtons: boolean = false;  // Butonların gösterilip gösterilmeyeceğini kontrol eden flag
-
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     this.typeEffect();
@@ -25,7 +24,7 @@ export class HomepageComponent implements OnInit {
   }
 
   typeEffect() {
-    const text = "Fast, planned and organized.";
+    const text = 'Fast, planned and organized.';
     const typedTextElement = document.getElementById('typed-text');
     const cursorElement = document.getElementById('cursor');
     let index = 0;
@@ -37,10 +36,10 @@ export class HomepageComponent implements OnInit {
         setTimeout(typeCharacter, 100);
       } else {
         cursorElement!.style.display = 'none';
-        this.showButtons = true;  // Animasyon tamamlandığında butonları göster
+        this.showButtons = true; // Animasyon tamamlandığında butonları göster
       }
     };
 
-    setTimeout(typeCharacter, 500);
+    typeCharacter();
   }
 }
