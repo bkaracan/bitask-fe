@@ -47,10 +47,9 @@
   </div>
 </div>
 
-<!-- Statü Seçim Pop-up'ı -->
+<!-- Status Popup -->
 <div class="status-popup" *ngIf="isStatusPopupOpen">
   <ul class="status-list">
-    <!-- Status Item'leri button olarak güncelledim -->
     <li>
       <button
         class="status-item online-status"
@@ -86,6 +85,63 @@
     </li>
   </ul>
 </div>
+
+<style>
+  .status-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .status-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .status-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+
+  .online-status {
+    color: #00ff87;
+  }
+  .online-status .status-circle {
+    background-color: #00ff87;
+  }
+  .online-status:hover {
+    background-color: #00ff87;
+    color: #16262c;
+  }
+
+  .away-status {
+    color: #ffdb58;
+  }
+  .away-status .status-circle {
+    background-color: #ffdb58;
+  }
+  .away-status:hover {
+    background-color: #ffdb58;
+    color: #16262c;
+  }
+
+  .busy-status {
+    color: #ff4136;
+  }
+  .busy-status .status-circle {
+    background-color: #ff4136;
+  }
+  .busy-status:hover {
+    background-color: #ff4136;
+    color: #16262c;
+  }
+</style>
 
 <div class="dashboard-container">
   <h1>Welcome to the Dashboard</h1>
