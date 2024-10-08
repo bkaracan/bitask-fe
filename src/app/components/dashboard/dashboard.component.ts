@@ -67,7 +67,9 @@ export class DashboardComponent {
     this.userStatus = this.selectedUserStatus;
     this.isStatusPopupOpen = false;
 
-    const userCircleElement = document.querySelector('.user-circle');
+    const userCircleElement = document.querySelector(
+      '.user-circle'
+    ) as HTMLElement | null;
     if (userCircleElement) {
       const statusColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
@@ -81,7 +83,9 @@ export class DashboardComponent {
     }
 
     // Statü metninin rengini değiştirme
-    const statusTextElement = document.querySelector('.status-container p');
+    const statusTextElement = document.querySelector(
+      '.status-container p'
+    ) as HTMLElement | null;
     if (statusTextElement) {
       const statusTextColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
@@ -95,7 +99,9 @@ export class DashboardComponent {
     }
 
     // Statü değiştirme ikonunun rengini değiştirme
-    const statusIconElement = document.querySelector('.status-change-icon');
+    const statusIconElement = document.querySelector(
+      '.status-change-icon'
+    ) as HTMLElement | null;
     if (statusIconElement) {
       const statusIconColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
