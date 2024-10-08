@@ -161,10 +161,7 @@ export class RegistrationComponent {
           const backendErrorMessage = response?.data?.error;
 
           // Token süresi dolmuşsa
-          if (
-            backendErrorMessage &&
-            backendErrorMessage.includes('Activation token has expired')
-          ) {
+          if (backendErrorMessage?.includes('Activation token has expired')) {
             this.isExpiredCode = true; // Süresi dolmuş kod için
             this.isInvalidCode = false; // Yanlış kod mesajını sıfırla
           } else {
