@@ -9,7 +9,7 @@ import { PasswordResetRequestDTO } from '../models/password-reset-request.dto';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private apiUrl = 'http://localhost:8088/api/v1/auth'; // Backend URL'i
+  private readonly apiUrl = 'http://localhost:8088/api/v1/auth'; // Backend URL'i
 
   constructor(private http: HttpClient) {}
 
