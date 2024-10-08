@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
   userFullName: string = '';
@@ -21,10 +21,12 @@ export class DashboardComponent {
   isUserPopupOpen: boolean = false;
   isStatusPopupOpen: boolean = false;
 
-  constructor(private userService: UserService, 
-    private userStatusService: UserStatusService,
-    private authService: AuthenticationService,
-    private router: Router) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly userStatusService: UserStatusService,
+    private readonly authService: AuthenticationService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit() {
     const token = localStorage.getItem('jwtToken');
@@ -36,11 +38,15 @@ export class DashboardComponent {
       this.userEmail = decodedToken.sub;
       this.userJobTitle = decodedToken.jobTitle;
       this.userStatus = decodedToken.userStatus;
-      this.userInitials = `${nameParts[0]?.charAt(0) || ''}${nameParts[1]?.charAt(0) || ''}`;
+      this.userInitials = `${nameParts[0]?.charAt(0) || ''}${
+        nameParts[1]?.charAt(0) || ''
+      }`;
 
-      this.userStatusService.getAllUserStatus().subscribe(response => {
+      this.userStatusService.getAllUserStatus().subscribe((response) => {
         if (response.success) {
-          this.userStatusList = response.data.filter((status: string) => status !== 'Offline');
+          this.userStatusList = response.data.filter(
+            (status: string) => status !== 'Offline'
+          );
         }
       });
     } else {
@@ -61,26 +67,30 @@ export class DashboardComponent {
     this.userStatus = this.selectedUserStatus;
     this.isStatusPopupOpen = false;
 
-    const userCircleElement = document.querySelector('.user-circle') as HTMLElement | null;
+    const userCircleElement = document.querySelector(
+      '.user-circle'
+    ) as HTMLElement | null;
     if (userCircleElement) {
       const statusColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
         BUSY: '#ff4136',
-        AWAY: '#ffdb58'
+        AWAY: '#ffdb58',
       };
       const color = statusColors[this.selectedUserStatus];
       if (color) {
         userCircleElement.style.backgroundColor = color;
       }
     }
-    
+
     // Statü metninin rengini değiştirme
-    const statusTextElement = document.querySelector('.status-container p') as HTMLElement | null;
+    const statusTextElement = document.querySelector(
+      '.status-container p'
+    ) as HTMLElement | null;
     if (statusTextElement) {
       const statusTextColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
         BUSY: '#ff4136',
-        AWAY: '#ffdb58'
+        AWAY: '#ffdb58',
       };
       const textColor = statusTextColors[this.selectedUserStatus];
       if (textColor) {
@@ -89,12 +99,14 @@ export class DashboardComponent {
     }
 
     // Statü değiştirme ikonunun rengini değiştirme
-    const statusIconElement = document.querySelector('.status-change-icon') as HTMLElement | null;
+    const statusIconElement = document.querySelector(
+      '.status-change-icon'
+    ) as HTMLElement | null;
     if (statusIconElement) {
       const statusIconColors: { [key: string]: string } = {
         ONLINE: '#00ff87',
         BUSY: '#ff4136',
-        AWAY: '#ffdb58'
+        AWAY: '#ffdb58',
       };
       const iconColor = statusIconColors[this.selectedUserStatus];
       if (iconColor) {
@@ -103,22 +115,27 @@ export class DashboardComponent {
       }
     }
 
-    this.userService.updateUserStatus(this.selectedUserStatus).subscribe(response => {
-      if (response.success) {
-        console.log("Status updated successfully!:", this.selectedUserStatus);
-      } else {
-        console.error("Status update error:", response.message);
-      }
-    });
+    this.userService
+      .updateUserStatus(this.selectedUserStatus)
+      .subscribe((response) => {
+        if (response.success) {
+          console.log('Status updated successfully!:', this.selectedUserStatus);
+        } else {
+          console.error('Status update error:', response.message);
+        }
+      });
   }
 
   logout() {
-    this.authService.logout().subscribe(() => {
-      // Başarıyla çıkış yapıldığında anasayfaya yönlendir
-      this.router.navigate(['/']);
-      localStorage.removeItem('jwtToken'); // JWT'yi temizle
-    }, error => {
-      console.error('Logout failed', error);
-    });
+    this.authService.logout().subscribe(
+      () => {
+        // Başarıyla çıkış yapıldığında anasayfaya yönlendir
+        this.router.navigate(['/']);
+        localStorage.removeItem('jwtToken'); // JWT'yi temizle
+      },
+      (error) => {
+        console.error('Logout failed', error);
+      }
+    );
   }
 }
