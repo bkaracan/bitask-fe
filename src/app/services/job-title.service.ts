@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JobTitleService {
-  private apiUrl = 'http://localhost:8088/api/v1/search/getAllJobTitles';
+  private readonly apiUrl =
+    'http://localhost:8088/api/v1/search/getAllJobTitles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getJobTitles(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
