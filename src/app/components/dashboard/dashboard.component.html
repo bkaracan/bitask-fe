@@ -2,7 +2,13 @@
   <img src="assets/bitaskicon.png" alt="BiTASK Icon" class="logo" />
   <span class="title">BiTASK</span>
   <div class="user-info-container">
-    <div class="user-circle" (click)="openUserPopup()">
+    <div
+      class="user-circle"
+      (click)="openUserPopup()"
+      (keydown.enter)="openUserPopup()"
+      (keydown.space)="openUserPopup()"
+      tabindex="0"
+    >
       <span class="user-initials">{{ userInitials }}</span>
     </div>
     <!-- Logout Button -->
@@ -15,14 +21,28 @@
 
 <div class="popup" *ngIf="isUserPopupOpen">
   <img src="assets/usericon.png" alt="User Icon" class="user-icon" />
-  <p><strong>{{ userFullName }}</strong></p>
-  <p><strong>{{ userEmail }}</strong></p>
-  <p><strong>{{ userJobTitle }}</strong></p>
+  <p>
+    <strong>{{ userFullName }}</strong>
+  </p>
+  <p>
+    <strong>{{ userEmail }}</strong>
+  </p>
+  <p>
+    <strong>{{ userJobTitle }}</strong>
+  </p>
 
   <!-- Statü Değiştirme İkonu -->
   <div class="status-container">
-    <p><strong>{{ userStatus }}</strong></p>
-    <div class="status-change-icon" (click)="openStatusPopup()">
+    <p>
+      <strong>{{ userStatus }}</strong>
+    </p>
+    <div
+      class="status-change-icon"
+      (click)="openStatusPopup()"
+      (keydown.enter)="openStatusPopup()"
+      (keydown.space)="openStatusPopup()"
+      tabindex="0"
+    >
       <span>&gt;</span>
     </div>
   </div>
@@ -31,21 +51,38 @@
 <!-- Statü Seçim Pop-up'ı -->
 <div class="status-popup" *ngIf="isStatusPopupOpen">
   <ul class="status-list">
-    <li class="status-item online-status" (click)="onStatusSelect('ONLINE')">
+    <li
+      class="status-item online-status"
+      (click)="onStatusSelect('ONLINE')"
+      (keydown.enter)="onStatusSelect('ONLINE')"
+      (keydown.space)="onStatusSelect('ONLINE')"
+      tabindex="0"
+    >
       <span class="status-circle"></span>
       <span class="status-text">Online</span>
     </li>
-    <li class="status-item away-status" (click)="onStatusSelect('AWAY')">
+    <li
+      class="status-item away-status"
+      (click)="onStatusSelect('AWAY')"
+      (keydown.enter)="onStatusSelect('AWAY')"
+      (keydown.space)="onStatusSelect('AWAY')"
+      tabindex="0"
+    >
       <span class="status-circle"></span>
       <span class="status-text">Away</span>
     </li>
-    <li class="status-item busy-status" (click)="onStatusSelect('BUSY')">
+    <li
+      class="status-item busy-status"
+      (click)="onStatusSelect('BUSY')"
+      (keydown.enter)="onStatusSelect('BUSY')"
+      (keydown.space)="onStatusSelect('BUSY')"
+      tabindex="0"
+    >
       <span class="status-circle"></span>
       <span class="status-text">Busy</span>
     </li>
   </ul>
 </div>
-
 
 <div class="dashboard-container">
   <h1>Welcome to the Dashboard</h1>
