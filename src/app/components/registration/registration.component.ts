@@ -35,10 +35,10 @@ export class RegistrationComponent {
   };
 
   constructor(
-    private fb: FormBuilder,
-    private jobTitleService: JobTitleService,
-    private authService: AuthenticationService,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly jobTitleService: JobTitleService,
+    private readonly authService: AuthenticationService,
+    private readonly router: Router
   ) {
     this.registrationForm = this.fb.group({
       firstName: ['', Validators.required],
