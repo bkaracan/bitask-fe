@@ -236,3 +236,126 @@
   background-color: #16262c;
   color: #ffffff;
 }
+
+.create-board-btn {
+  background-color: #00ff87;
+  color: #16262c;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #7bd3ea;
+  }
+}
+
+.create-board-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: "10px";
+  border-radius: 8px;
+  color: #00ff87;
+  
+  .create-board-icon {
+    width: 80px !important; /* Daha yüksek özgüllük ve !important ile küçültme */
+    height: 80px !important;
+    margin-bottom: 10px;
+  }
+}
+
+.success-message {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #00a65a !important;
+  font-weight: bold !important;
+  margin-top: 10px !important;
+  text-align: center !important;
+  opacity: 1;
+  transition: opacity 1s ease-out; /* 1 saniyelik yumuşak kaybolma efekti */
+
+  i {
+    font-size: 1.2em !important;
+    margin-right: 5px !important;
+  }
+
+  span {
+    font-size: 0.95em !important;
+  }
+}
+
+.error-message {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #ff4136 !important; /* Kırmızı renk */
+  font-weight: bold !important;
+  margin-top: 10px !important;
+
+  i {
+    font-size: 1.2em !important;
+    margin-right: 5px !important;
+  }
+
+  span {
+    font-size: 0.95em !important;
+  }
+}
+
+
+.fade-out {
+  opacity: 0;  /* Bu sınıf eklendiğinde mesaj yumuşakça kaybolur */
+}
+
+::ng-deep .centered-dialog .footer-buttons {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 5px !important; /* Butonlar arasındaki boşluk */
+  padding-top: 10px !important;
+}
+
+::ng-deep .custom-hover {
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #7bd3ea !important;
+    color: #16262c !important;
+  }
+}
+
+::ng-deep .centered-dialog .p-dialog-title {
+  text-align: center !important;
+  width: 100% !important;
+  justify-content: center;
+  display: flex !important;
+}
+
+
+::ng-deep .centered-dialog .footer-buttons {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 5px; /* Butonlar arasındaki boşluk */
+  padding-top: 10px;
+}
+
+
+
+::ng-deep .custom-hover {
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #7bd3ea !important; /* Gök mavi renk */
+    color: #16262c !important; /* Metin rengi */
+  }
+}
+
+::ng-deep .centered-dialog .p-dialog-title {
+  text-align: center !important;
+  width: 100% !important;
+  justify-content: center;
+  display: flex;
+}
