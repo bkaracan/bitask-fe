@@ -4,6 +4,10 @@ import { UserStatusService } from 'src/app/services/user-status.service';
 import { UserDTO } from 'src/app/models/user.dto';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { BoardService } from 'src/app/services/board.service';
+import { catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,12 +24,21 @@ export class DashboardComponent {
   userStatusList: string[] = [];
   isUserPopupOpen: boolean = false;
   isStatusPopupOpen: boolean = false;
+  isBoardPopupOpen: boolean = false;
+  newBoardName: string = '';
+  placeholderText: string = 'Type the name of the new board';
+  isSuccessMessageVisible: boolean = false;
+  isErrorMessageVisible = false;
+  errorMessage = '';
 
   constructor(
     private readonly userService: UserService,
     private readonly userStatusService: UserStatusService,
     private readonly authService: AuthenticationService,
-    private readonly router: Router
+    private readonly boardService: BoardService,
+    private readonly router: Router,
+    private readonly http: HttpClient
+    
   ) {}
 
   ngOnInit() {
@@ -60,6 +73,10 @@ export class DashboardComponent {
 
   openStatusPopup() {
     this.isStatusPopupOpen = !this.isStatusPopupOpen;
+  }
+
+  openBoardPopup() {
+    this.isBoardPopupOpen = !this.isBoardPopupOpen;
   }
 
   onStatusSelect(status: string): void {
@@ -137,5 +154,61 @@ export class DashboardComponent {
         console.error('Logout failed', error);
       }
     );
+  }
+
+  createBoard(): void {
+    // Board ismi boş ise hata mesajı göster
+    if (!this.newBoardName.trim()) {
+        this.isErrorMessageVisible = true;
+        this.errorMessage = 'Board name is required!';
+        setTimeout(() => {
+            this.isErrorMessageVisible = false;
+        }, 2000);
+        return;
+    }
+
+    this.boardService.createBoard(this.newBoardName)
+        .subscribe(
+            (response: any) => {
+                if (response.success) {
+                    // Başarı durumu
+                    this.isSuccessMessageVisible = true;
+                    this.isErrorMessageVisible = false;
+                    this.newBoardName = '';
+                    setTimeout(() => {
+                        this.isSuccessMessageVisible = false;
+                        this.isBoardPopupOpen = false;
+                    }, 1500);
+                } else {
+                    // Başarısız durum, backend tarafından dönen hata mesajını göster
+                    this.isErrorMessageVisible = true;
+                    this.errorMessage = response?.data?.error || 'The board already exists!';
+                    setTimeout(() => {
+                        this.isErrorMessageVisible = false;
+                    }, 2000); // Hata mesajı 2 saniye sonra kaybolacak
+                }
+            },
+            (error) => {
+                // Ağ veya sunucu hatası durumunda genel bir hata mesajı göster
+                this.isErrorMessageVisible = true;
+                this.errorMessage = 'An error occurred while creating the board!';
+                setTimeout(() => {
+                    this.isErrorMessageVisible = false;
+                }, 2000); // Genel hata mesajı 2 saniye sonra kaybolacak
+            }
+        );
+}
+
+  
+
+
+  clearPlaceholder(): void {
+    this.placeholderText = '';
+  }
+
+  resetPlaceholder(): void {
+    if (!this.newBoardName) {
+      this.placeholderText = 'Type the name of the new board';
+    }
   }
 }
