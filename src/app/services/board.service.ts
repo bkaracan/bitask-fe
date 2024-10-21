@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BoardService {
   private apiUrl = 'http://localhost:8088/api/v1/board';
@@ -13,8 +13,15 @@ export class BoardService {
   createBoard(boardName: string): Observable<any> {
     const body = { name: boardName };
     const headers = new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+      Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
     });
     return this.http.post(`${this.apiUrl}/save`, body, { headers });
+  }
+
+  getAllBoards(): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+    });
+    return this.http.get(`${this.apiUrl}/getAllBoards`, { headers });
   }
 }

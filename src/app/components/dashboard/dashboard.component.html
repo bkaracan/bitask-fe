@@ -1,28 +1,61 @@
 <div class="navbar">
   <img src="assets/bitaskicon.png" alt="BiTASK Icon" class="logo" />
   <span class="title">BiTASK</span>
+  <!-- Dropdown ile mevcut board listesi -->
+  <p-dropdown
+    [options]="boards"
+    [(ngModel)]="selectedBoard"
+    optionLabel="name"
+    placeholder="Select a board"
+    emptyMessage="No board yet!"
+    [ngClass]="{ 'neon-red-border': boards.length === 0 }"
+    class="board-dropdown"
+  >
+  </p-dropdown>
+
   <!-- PrimeNG Butonu ile Create a New Board-->
-   <button pButton label="Create a New Board" icon="pi pi-plus" 
-   iconPos="right" 
-   class="p-button-rounded p-button-success p-mr 2 custom-hover" 
-   style="background-color: #00ff87; 
-   color: #16262c;
-   margin-left: 300px;"
-   
-   (click)="openBoardPopup()"></button>
-   <!-- PrimeNG Dialog ile Create Board Pop-up'ı -->
-   <p-dialog header="Creating Board" [(visible)]="isBoardPopupOpen" [modal]="true" [closable]="false" [style]="{width: '350px'}" styleClass="centered-dialog">
+  <button
+    pButton
+    label="Create a New Board"
+    icon="pi pi-plus"
+    iconPos="right"
+    class="p-button-rounded p-button-success p-mr 2 custom-hover new-board-button"
+    style="background-color: #00ff87; color: #16262c; margin-left: 100px"
+    (click)="openBoardPopup()"
+  ></button>
+  <!-- PrimeNG Dialog ile Create Board Pop-up'ı -->
+  <p-dialog
+    header="Creating Board"
+    [(visible)]="isBoardPopupOpen"
+    [modal]="true"
+    [closable]="false"
+    style="width: '450px'; height: '350px'"
+    styleClass="centered-dialog"
+  >
     <div class="p-text-center create-board-popup">
-      <img src="assets/createboardicon.png" alt="Create Board Icon" class="create-board-icon"/>
+      <img
+        src="assets/createboardicon.png"
+        alt="Create Board Icon"
+        class="create-board-icon"
+      />
     </div>
     <div class="p-field">
       <label for="boardName"></label>
-      <input pInputText id="boardName" [(ngModel)]="newBoardName" [placeholder]="placeholderText"
-      (focus)="clearPlaceholder()"
-      (blur)="resetPlaceholder()"
-      style="width: 100%; padding: 10px; border: 1px solid #00ff87; 
-              border-radius: 5px; background-color: #C4E1F6; color: #243642; 
-              text-align: center; box-sizing: border-box;"
+      <input
+        pInputText
+        id="boardName"
+        [(ngModel)]="newBoardName"
+        [placeholder]="placeholderText"
+        style="
+          width: 101%;
+          padding: 10px;
+          border: 1px solid #00ff87;
+          border-radius: 5px;
+          background-color: #c4e1f6;
+          color: #243642;
+          text-align: center;
+          box-sizing: border-box;
+        "
       />
     </div>
     <!-- Başarı mesajı alanı -->
@@ -36,8 +69,20 @@
       <span>{{ errorMessage }}</span>
     </div>
     <p-footer class="footer-buttons">
-      <button pButton label="CREATE" icon="pi pi-check" (click)="createBoard()" class="p-button-rounded p-button-success"></button>
-      <button pButton label="CANCEL" icon="pi pi-times" (click)="isBoardPopupOpen = false" class="p-button-rounded p-button-secondary"></button>
+      <button
+        pButton
+        label="CREATE"
+        icon="pi pi-check"
+        (click)="createBoard()"
+        class="p-button-rounded p-button-success"
+      ></button>
+      <button
+        pButton
+        label="CANCEL"
+        icon="pi pi-times"
+        (click)="isBoardPopupOpen = false"
+        class="p-button-rounded p-button-secondary"
+      ></button>
     </p-footer>
   </p-dialog>
   <div class="user-info-container">

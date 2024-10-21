@@ -30,6 +30,9 @@ export class DashboardComponent {
   isSuccessMessageVisible: boolean = false;
   isErrorMessageVisible = false;
   errorMessage = '';
+  boards: any[] = [];
+  selectedBoard: any = null;
+  isDropdownClicked: boolean = false;
 
   constructor(
     private readonly userService: UserService,
@@ -38,7 +41,6 @@ export class DashboardComponent {
     private readonly boardService: BoardService,
     private readonly router: Router,
     private readonly http: HttpClient
-    
   ) {}
 
   ngOnInit() {
@@ -60,6 +62,14 @@ export class DashboardComponent {
           this.userStatusList = response.data.filter(
             (status: string) => status !== 'Offline'
           );
+        }
+      });
+      // Tüm board kayıtlarını almak için
+      this.boardService.getAllBoards().subscribe((response) => {
+        if (response.success) {
+          this.boards = response.data; // Board kayıtlarını set ediyoruz
+        } else {
+          console.error('Error fetching boards:', response.message);
         }
       });
     } else {
@@ -159,56 +169,44 @@ export class DashboardComponent {
   createBoard(): void {
     // Board ismi boş ise hata mesajı göster
     if (!this.newBoardName.trim()) {
-        this.isErrorMessageVisible = true;
-        this.errorMessage = 'Board name is required!';
-        setTimeout(() => {
+      this.isErrorMessageVisible = true;
+      this.errorMessage = 'Board name is required!';
+      setTimeout(() => {
+        this.isErrorMessageVisible = false;
+      }, 2000);
+      return;
+    }
+
+    this.boardService.createBoard(this.newBoardName).subscribe(
+      (response: any) => {
+        if (response.success) {
+          // Başarı durumu
+          this.boards.push(response.data); // Yeni board'u boards array'ine ekliyoruz
+          this.isSuccessMessageVisible = true;
+          this.isErrorMessageVisible = false;
+          this.newBoardName = ''; // Input alanını temizliyoruz
+          setTimeout(() => {
+            this.isSuccessMessageVisible = false;
+            this.isBoardPopupOpen = false; // Pop-up'ı kapatıyoruz
+          }, 1500);
+        } else {
+          // Başarısız durum, backend tarafından dönen hata mesajını göster
+          this.isErrorMessageVisible = true;
+          this.errorMessage =
+            response?.data?.error || 'The board already exists!';
+          setTimeout(() => {
             this.isErrorMessageVisible = false;
-        }, 2000);
-        return;
-    }
-
-    this.boardService.createBoard(this.newBoardName)
-        .subscribe(
-            (response: any) => {
-                if (response.success) {
-                    // Başarı durumu
-                    this.isSuccessMessageVisible = true;
-                    this.isErrorMessageVisible = false;
-                    this.newBoardName = '';
-                    setTimeout(() => {
-                        this.isSuccessMessageVisible = false;
-                        this.isBoardPopupOpen = false;
-                    }, 1500);
-                } else {
-                    // Başarısız durum, backend tarafından dönen hata mesajını göster
-                    this.isErrorMessageVisible = true;
-                    this.errorMessage = response?.data?.error || 'The board already exists!';
-                    setTimeout(() => {
-                        this.isErrorMessageVisible = false;
-                    }, 2000); // Hata mesajı 2 saniye sonra kaybolacak
-                }
-            },
-            (error) => {
-                // Ağ veya sunucu hatası durumunda genel bir hata mesajı göster
-                this.isErrorMessageVisible = true;
-                this.errorMessage = 'An error occurred while creating the board!';
-                setTimeout(() => {
-                    this.isErrorMessageVisible = false;
-                }, 2000); // Genel hata mesajı 2 saniye sonra kaybolacak
-            }
-        );
-}
-
-  
-
-
-  clearPlaceholder(): void {
-    this.placeholderText = '';
-  }
-
-  resetPlaceholder(): void {
-    if (!this.newBoardName) {
-      this.placeholderText = 'Type the name of the new board';
-    }
+          }, 2000); // Hata mesajı 2 saniye sonra kaybolacak
+        }
+      },
+      (error) => {
+        // Ağ veya sunucu hatası durumunda genel bir hata mesajı göster
+        this.isErrorMessageVisible = true;
+        this.errorMessage = 'An error occurred while creating the board!';
+        setTimeout(() => {
+          this.isErrorMessageVisible = false;
+        }, 2000); // Genel hata mesajı 2 saniye sonra kaybolacak
+      }
+    );
   }
 }
