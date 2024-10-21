@@ -259,7 +259,7 @@
   padding: "10px";
   border-radius: 8px;
   color: #00ff87;
-  
+
   .create-board-icon {
     width: 80px !important; /* Daha yüksek özgüllük ve !important ile küçültme */
     height: 80px !important;
@@ -306,9 +306,8 @@
   }
 }
 
-
 .fade-out {
-  opacity: 0;  /* Bu sınıf eklendiğinde mesaj yumuşakça kaybolur */
+  opacity: 0; /* Bu sınıf eklendiğinde mesaj yumuşakça kaybolur */
 }
 
 ::ng-deep .centered-dialog .footer-buttons {
@@ -334,15 +333,12 @@
   display: flex !important;
 }
 
-
 ::ng-deep .centered-dialog .footer-buttons {
   display: flex !important;
   justify-content: center !important;
   gap: 5px; /* Butonlar arasındaki boşluk */
   padding-top: 10px;
 }
-
-
 
 ::ng-deep .custom-hover {
   transition: background-color 0.3s ease;
@@ -358,4 +354,31 @@
   width: 100% !important;
   justify-content: center;
   display: flex;
+}
+
+::ng-deep .p-dropdown-empty-message {
+  color: #ff073a; /* Kırmızı renk */
+  font-weight: bold;
+  font-size: 1rem; /* Yazıyı belirginleştirmek için */
+}
+
+.board-dropdown {
+  margin-left: 50px; /* İstediğiniz miktarda sağa kaydırma */
+  width: 300px; /* Genişliği korumak için */
+}
+
+.new-board-button {
+  margin-right: auto; /* Butonu sola taşıyoruz */
+  background-color: #00ff87;
+  color: #16262c;
+}
+
+.board-dropdown {
+  width: 162px; /* İstediğiniz genişliği belirleyin */
+}
+
+.neon-red-border {
+  border: 3px solid #ff073a; /* Neon kırmızı renkte çerçeve */
+  box-shadow: 0 0 5px #ff073a; /* Neon efekt için hafif parıltı */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
