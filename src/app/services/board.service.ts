@@ -24,4 +24,11 @@ export class BoardService {
     });
     return this.http.get(`${this.apiUrl}/getAllBoards`, { headers });
   }
+
+  deleteBoard(id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+    });
+    return this.http.delete(`${this.apiUrl}/deleteById?id=${id}`, { headers });
+  }
 }

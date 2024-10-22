@@ -3,15 +3,83 @@
   <span class="title">BiTASK</span>
   <!-- Dropdown ile mevcut board listesi -->
   <p-dropdown
-    [options]="boards"
     [(ngModel)]="selectedBoard"
+    [options]="boards"
     optionLabel="name"
     placeholder="Select a board"
     emptyMessage="No board yet!"
-    [ngClass]="{ 'neon-red-border': boards.length === 0 }"
     class="board-dropdown"
+    [ngClass]="{ 'neon-red-border': boards.length === 0 }"
   >
+    <ng-template let-board pTemplate="item">
+      <div
+        class="board-item"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span>{{ board.name }}</span>
+        <div style="display: flex; gap: 10px">
+          <i
+            class="pi pi-sliders-h"
+            title="Settings"
+            style="
+              cursor: pointer;
+              color: #ffae00;
+              margin-left: 10px;
+              transition: transform 0.3s ease;
+            "
+            (mouseenter)="onMouseEnter($event)"
+            (mouseleave)="onMouseLeave($event)"
+          ></i>
+          <i
+            class="pi pi-trash"
+            (click)="openDeletePopup(board.id)"
+            title="Delete Board"
+            style="cursor: pointer; color: red; margin-left: 10px"
+          ></i>
+        </div>
+      </div>
+    </ng-template>
   </p-dropdown>
+
+  <!-- Silme Onay Pop-up'ı -->
+  <p-dialog
+    header="Are you sure you want to delete this board?"
+    [(visible)]="isDeletePopupOpen"
+    [modal]="true"
+    [closable]="false"
+    style="width: '350px'"
+    [styleClass]="'delete-dialog'"
+  >
+    <div class="confirmation-content">
+      <div
+        class="confirmation-buttons"
+        style="display: flex; justify-content: center; gap: 10px"
+      >
+        <button
+          pButton
+          label="YES"
+          class="p-button-success"
+          (click)="deleteBoard()"
+          style="margin-right: 10px"
+        ></button>
+        <button
+          pButton
+          label="NO"
+          class="p-button-danger"
+          (click)="cancelDelete()"
+        ></button>
+      </div>
+      <!-- Başarı mesajı alanı -->
+      <div *ngIf="isSuccessMessageVisible" class="success-message">
+        <i class="pi pi-check-circle"></i>
+        <span>The board has been deleted successfully!</span>
+      </div>
+    </div>
+  </p-dialog>
 
   <!-- PrimeNG Butonu ile Create a New Board-->
   <button
@@ -19,7 +87,7 @@
     label="Create a New Board"
     icon="pi pi-plus"
     iconPos="right"
-    class="p-button-rounded p-button-success p-mr 2 custom-hover new-board-button"
+    class="p-button-rounded p-button-success p-mr 2 custom-hover new-board-button kanit-semibold"
     style="background-color: #00ff87; color: #16262c; margin-left: 100px"
     (click)="openBoardPopup()"
   ></button>

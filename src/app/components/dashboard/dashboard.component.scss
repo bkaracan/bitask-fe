@@ -382,3 +382,19 @@
   box-shadow: 0 0 5px #ff073a; /* Neon efekt için hafif parıltı */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.kanit-semibold {
+  font-family: "Kanit", sans-serif;
+}
+
+.board-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.pi-trash:hover {
+  color: #ff4136; /* Hover sırasında ikon rengi */
+  transform: scale(1.2); /* İkonu hafif büyütme efekti */
+}

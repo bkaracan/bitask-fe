@@ -25,6 +25,8 @@ export class DashboardComponent {
   isUserPopupOpen: boolean = false;
   isStatusPopupOpen: boolean = false;
   isBoardPopupOpen: boolean = false;
+  isDeletePopupOpen: boolean = false;
+  boardIdToDelete: string | null = null;
   newBoardName: string = '';
   placeholderText: string = 'Type the name of the new board';
   isSuccessMessageVisible: boolean = false;
@@ -208,5 +210,51 @@ export class DashboardComponent {
         }, 2000); // Genel hata mesajı 2 saniye sonra kaybolacak
       }
     );
+  }
+
+  onMouseEnter(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    target.style.transform = 'scale(1.2)'; // İkon %20 büyütülür
+  }
+
+  onMouseLeave(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    target.style.transform = 'scale(1)'; // İkon normal boyutuna döner
+  }
+
+  openDeletePopup(boardId: string): void {
+    // Dropdown'ın kapanmasını önlemek için
+    this.boardIdToDelete = boardId;
+    this.isDeletePopupOpen = true;
+  }
+
+  deleteBoard(): void {
+    if (!this.boardIdToDelete) return;
+
+    this.boardService.deleteBoard(this.boardIdToDelete).subscribe(
+      (response) => {
+        if (response.success) {
+          // Silinen board'u listeden kaldırıyoruz
+          this.boards = this.boards.filter(
+            (board) => board.id !== this.boardIdToDelete
+          );
+          this.isSuccessMessageVisible = true;
+          setTimeout(() => {
+            this.isSuccessMessageVisible = false;
+            this.isDeletePopupOpen = false; // Popup'ı kapat
+          }, 1500);
+        } else {
+          console.error('Board silinirken hata oluştu:', response.message);
+        }
+      },
+      (error) => {
+        console.error('Board silinirken hata oluştu:', error);
+      }
+    );
+  }
+
+  cancelDelete(): void {
+    this.isDeletePopupOpen = false;
+    this.boardIdToDelete = null; // Silme işlemi iptal edildiğinde sıfırla
   }
 }
