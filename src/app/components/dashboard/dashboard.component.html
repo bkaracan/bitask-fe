@@ -10,7 +10,20 @@
     emptyMessage="No board yet!"
     class="board-dropdown"
     [ngClass]="{ 'neon-red-border': boards.length === 0 }"
+    scrollHeight="200px"
   >
+    <ng-template pTemplate="selectedItem">
+      <div
+        style="
+          font-family: 'Roboto Slab', serif;
+          font-optical-sizing: auto;
+          font-weight: 600;
+          font-style: normal;
+        "
+      >
+        {{ selectedBoard?.name }}
+      </div>
+    </ng-template>
     <ng-template let-board pTemplate="item">
       <div
         class="board-item"
@@ -18,6 +31,10 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
+          font-family: 'Roboto Slab', serif;
+          font-optical-sizing: auto;
+          font-weight: 600;
+          font-style: normal;
         "
       >
         <span>{{ board.name }}</span>
