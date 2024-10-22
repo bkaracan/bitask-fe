@@ -44,7 +44,7 @@
             title="Settings"
             style="
               cursor: pointer;
-              color: #ffae00;
+              color: #1f51ff;
               margin-left: 10px;
               transition: transform 0.3s ease;
             "
@@ -133,6 +133,8 @@
         id="boardName"
         [(ngModel)]="newBoardName"
         [placeholder]="placeholderText"
+        (focus)="clearPlaceholder()"
+        (blur)="restorePlaceholder()"
         style="
           width: 101%;
           padding: 10px;

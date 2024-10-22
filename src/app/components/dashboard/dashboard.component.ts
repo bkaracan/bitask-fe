@@ -179,6 +179,15 @@ export class DashboardComponent {
       return;
     }
 
+    if (this.newBoardName.length > 16) {
+      this.isErrorMessageVisible = true;
+      this.errorMessage = '16 character limit exceeded!';
+      setTimeout(() => {
+        this.isErrorMessageVisible = false;
+      }, 2000); // Uyarı mesajını 2 saniye sonra gizle
+      return;
+    }
+
     this.boardService.createBoard(this.newBoardName).subscribe(
       (response: any) => {
         if (response.success) {
@@ -238,6 +247,15 @@ export class DashboardComponent {
           this.boards = this.boards.filter(
             (board) => board.id !== this.boardIdToDelete
           );
+
+          // Eğer silinen board seçiliyse, seçimi sıfırla
+          if (
+            this.selectedBoard &&
+            this.selectedBoard.id === this.boardIdToDelete
+          ) {
+            this.selectedBoard = null;
+          }
+
           this.isSuccessMessageVisible = true;
           setTimeout(() => {
             this.isSuccessMessageVisible = false;
@@ -252,7 +270,6 @@ export class DashboardComponent {
       }
     );
   }
-
   cancelDelete(): void {
     this.isDeletePopupOpen = false;
     this.boardIdToDelete = null; // Silme işlemi iptal edildiğinde sıfırla
@@ -282,5 +299,15 @@ export class DashboardComponent {
       // En güncel olan en üste gelecek şekilde sıralama
       return dateB.getTime() - dateA.getTime();
     });
+  }
+
+  clearPlaceholder(): void {
+    this.placeholderText = ''; // Placeholder'ı temizle
+  }
+
+  restorePlaceholder(): void {
+    if (!this.newBoardName) {
+      this.placeholderText = 'Type the name of the board'; // Eğer input alanı boşsa placeholder'ı geri getir
+    }
   }
 }
