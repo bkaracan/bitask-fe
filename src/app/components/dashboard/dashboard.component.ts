@@ -183,7 +183,7 @@ export class DashboardComponent {
       (response: any) => {
         if (response.success) {
           // Başarı durumu
-          this.boards.push(response.data); // Yeni board'u boards array'ine ekliyoruz
+          this.getBoardsFromBackend(); // Backend'den güncel board listesini alır
           this.isSuccessMessageVisible = true;
           this.isErrorMessageVisible = false;
           this.newBoardName = ''; // Input alanını temizliyoruz
@@ -256,5 +256,31 @@ export class DashboardComponent {
   cancelDelete(): void {
     this.isDeletePopupOpen = false;
     this.boardIdToDelete = null; // Silme işlemi iptal edildiğinde sıfırla
+  }
+
+  getBoardsFromBackend(): void {
+    this.boardService.getAllBoards().subscribe(
+      (response: any) => {
+        if (response.success) {
+          this.boards = response.data;
+          this.sortBoardsByCreateDate(); // Listeyi frontend tarafında da tekrar sıralıyoruz
+        } else {
+          console.error('Error fetching boards:', response.message);
+        }
+      },
+      (error) => {
+        console.error('An error occurred while fetching boards:', error);
+      }
+    );
+  }
+
+  sortBoardsByCreateDate(): void {
+    this.boards.sort((a, b) => {
+      const dateA = new Date(a.createdDate);
+      const dateB = new Date(b.createdDate);
+
+      // En güncel olan en üste gelecek şekilde sıralama
+      return dateB.getTime() - dateA.getTime();
+    });
   }
 }
