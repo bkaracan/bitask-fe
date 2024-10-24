@@ -8,6 +8,7 @@ import { BoardService } from 'src/app/services/board.service';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
+import { UpdateBoardRequestDTO } from 'src/app/models/update-board-request.dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,6 +36,14 @@ export class DashboardComponent {
   boards: any[] = [];
   selectedBoard: any = null;
   isDropdownClicked: boolean = false;
+  isBoardEditingPopupOpen = false;
+  editedBoardName = '';
+  editedBoardMembers: any[] = [];
+  availableUsers: any[] = [];
+  selectedUser: any;
+  membersToAdd: number[] = [];
+  membersToRemove: number[] = [];
+  boardId: number | null = null;
 
   constructor(
     private readonly userService: UserService,
@@ -309,5 +318,118 @@ export class DashboardComponent {
     if (!this.newBoardName) {
       this.placeholderText = 'Type the name of the board'; // Eğer input alanı boşsa placeholder'ı geri getir
     }
+  }
+
+  updateBoard(): void {
+    if (this.boardId !== null && this.newBoardName.trim()) {
+      const updateBoardRequestDTO = new UpdateBoardRequestDTO(
+        this.boardId, // Ensure this is a number
+        this.newBoardName,
+        this.membersToAdd,
+        this.membersToRemove
+      );
+
+      this.boardService.updateBoard(updateBoardRequestDTO).subscribe(
+        (response: any) => {
+          if (response.success) {
+            console.log('Board updated successfully');
+          } else {
+            console.error('Failed to update the board');
+          }
+        },
+        (error) => {
+          console.error('An error occurred while updating the board', error);
+        }
+      );
+    } else {
+      console.error('Board ID or new name is missing.');
+    }
+  }
+
+  // Board seçildiğinde ID atanacak (örnek)
+  selectBoard(board: any): void {
+    this.boardId = board.id;
+    this.newBoardName = board.name; // Varsayılan olarak mevcut board adı gelir
+  }
+
+  // Üye ekleme (örnek)
+  addMember(memberId: number): void {
+    if (!this.membersToAdd.includes(memberId)) {
+      this.membersToAdd.push(memberId);
+    }
+  }
+
+  // Üye çıkarma (örnek)
+  removeMember(memberId: number): void {
+    if (!this.membersToRemove.includes(memberId)) {
+      this.membersToRemove.push(memberId);
+    }
+  }
+
+  openBoardEditingPopup(board: any): void {
+    if (board) {
+      this.editedBoardName = board.name;
+      this.editedBoardMembers = [...(board.members || [])]; // board.members varsa
+      this.isBoardEditingPopupOpen = true;
+
+      // Kullanıcıları API'den çekiyoruz
+      this.userService.getAllUsers().subscribe((response) => {
+        if (response.success) {
+          this.availableUsers = response.data.filter(
+            (user: UserDTO) =>
+              !this.editedBoardMembers.some((member) => member.id === user.id) // Zaten eklenmiş olan üyeleri hariç tut
+          );
+        } else {
+          console.error('Failed to fetch users:', response.message);
+        }
+      });
+    } else {
+      console.error('Selected board is undefined or null');
+    }
+  }
+
+  addMemberToBoard(user: any) {
+    if (!this.editedBoardMembers.includes(user)) {
+      this.editedBoardMembers.push(user);
+      this.availableUsers = this.availableUsers.filter((u) => u !== user); // Remove from dropdown
+    }
+  }
+
+  removeMemberFromBoard(member: any) {
+    this.editedBoardMembers = this.editedBoardMembers.filter(
+      (m) => m !== member
+    );
+    this.availableUsers.push(member); // Add back to dropdown
+  }
+
+  confirmBoardChanges(): void {
+    const updateBoardRequestDTO: UpdateBoardRequestDTO = {
+      id: this.selectedBoard.id, // Assuming you have a selected board
+      name: this.editedBoardName,
+      membersToAdd: this.membersToAdd, // Since this is an array of numbers
+      membersToRemove: this.membersToRemove, // Since this is an array of numbers
+    };
+
+    this.boardService
+      .updateBoard(updateBoardRequestDTO)
+      .subscribe((response) => {
+        if (response.success) {
+          // Güncellenen board'u bulup adını değiştir
+          const updatedBoardIndex = this.boards.findIndex(
+            (board) => board.id === this.selectedBoard.id
+          );
+          if (updatedBoardIndex !== -1) {
+            this.boards[updatedBoardIndex].name = this.editedBoardName; // Yeni board adını set ediyoruz
+          }
+
+          this.isSuccessMessageVisible = true;
+          setTimeout(() => {
+            this.isSuccessMessageVisible = false;
+            this.isBoardEditingPopupOpen = false;
+          }, 2000);
+        } else {
+          console.error('Failed to update the board');
+        }
+      });
   }
 }

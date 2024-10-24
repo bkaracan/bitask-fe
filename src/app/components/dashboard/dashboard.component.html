@@ -13,41 +13,18 @@
     scrollHeight="200px"
   >
     <ng-template pTemplate="selectedItem">
-      <div
-        style="
-          font-family: 'Roboto Slab', serif;
-          font-optical-sizing: auto;
-          font-weight: 600;
-          font-style: normal;
-        "
-      >
+      <div class="board-selected-item">
         {{ selectedBoard?.name }}
       </div>
     </ng-template>
     <ng-template let-board pTemplate="item">
-      <div
-        class="board-item"
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-family: 'Roboto Slab', serif;
-          font-optical-sizing: auto;
-          font-weight: 600;
-          font-style: normal;
-        "
-      >
+      <div class="board-item">
         <span>{{ board.name }}</span>
-        <div style="display: flex; gap: 10px">
+        <div class="board-item-icons">
           <i
             class="pi pi-sliders-h"
             title="Settings"
-            style="
-              cursor: pointer;
-              color: #1f51ff;
-              margin-left: 10px;
-              transition: transform 0.3s ease;
-            "
+            (click)="openBoardEditingPopup(board)"
             (mouseenter)="onMouseEnter($event)"
             (mouseleave)="onMouseLeave($event)"
           ></i>
@@ -57,12 +34,83 @@
             (keydown.enter)="openDeletePopup(board.id)"
             (keydown.space)="openDeletePopup(board.id)"
             title="Delete Board"
-            style="cursor: pointer; color: red; margin-left: 10px"
           ></i>
         </div>
       </div>
     </ng-template>
   </p-dropdown>
+
+  <!-- Board Editing Popup -->
+  <p-dialog
+    header="Board Editing Popup"
+    [(visible)]="isBoardEditingPopupOpen"
+    [modal]="true"
+    [closable]="false"
+    styleClass="centered-dialog"
+  >
+    <div class="p-text-center create-board-popup">
+      <div class="p-field">
+        <label for="editBoardName">Board Name:</label>
+        <input
+          pInputText
+          id="editBoardName"
+          [(ngModel)]="editedBoardName"
+          placeholder="Board name"
+        />
+      </div>
+
+      <!-- Add members dropdown -->
+      <label for="addMembers">Add members:</label>
+      <p-dropdown
+        [options]="availableUsers"
+        [(ngModel)]="selectedUser"
+        placeholder="Select a member"
+        (onChange)="addMemberToBoard(selectedUser)"
+      >
+        <ng-template let-user pTemplate="selectedItem">
+          <div *ngIf="user">
+            {{ user.firstName || "N/A" }} {{ user.lastName || "N/A" }} -
+            {{ user.jobTitle?.name || "No Job Title" }}
+          </div>
+        </ng-template>
+
+        <ng-template let-user pTemplate="item">
+          <div *ngIf="user">
+            {{ user.firstName || "N/A" }} {{ user.lastName || "N/A" }} -
+            {{ user.jobTitle?.name || "No Job Title" }}
+          </div>
+        </ng-template>
+      </p-dropdown>
+
+      <!-- Existing members list preview -->
+      <div class="board-member-list">
+        <h4>Board Member List Preview</h4>
+        <ul>
+          <li *ngFor="let member of editedBoardMembers">
+            {{ member.name }}
+            <button (click)="removeMemberFromBoard(member)">Remove</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p-footer class="footer-buttons">
+      <button
+        pButton
+        label="CONFIRM"
+        icon="pi pi-check"
+        (click)="confirmBoardChanges()"
+        class="p-button-rounded p-button-success"
+      ></button>
+      <button
+        pButton
+        label="CANCEL"
+        icon="pi pi-times"
+        (click)="isBoardEditingPopupOpen = false"
+        class="p-button-rounded p-button-secondary"
+      ></button>
+    </p-footer>
+  </p-dialog>
 
   <!-- Silme Onay Pop-up'ı -->
   <p-dialog
@@ -70,20 +118,15 @@
     [(visible)]="isDeletePopupOpen"
     [modal]="true"
     [closable]="false"
-    style="width: '350px'"
-    [styleClass]="'delete-dialog'"
+    styleClass="delete-dialog"
   >
     <div class="confirmation-content">
-      <div
-        class="confirmation-buttons"
-        style="display: flex; justify-content: center; gap: 10px"
-      >
+      <div class="confirmation-buttons">
         <button
           pButton
           label="YES"
           class="p-button-success"
           (click)="deleteBoard()"
-          style="margin-right: 10px"
         ></button>
         <button
           pButton
@@ -106,17 +149,16 @@
     label="Create a New Board"
     icon="pi pi-plus"
     iconPos="right"
-    class="p-button-rounded p-button-success p-mr 2 custom-hover new-board-button kanit-semibold"
-    style="background-color: #00ff87; color: #16262c; margin-left: 100px"
+    class="p-button-rounded p-button-success new-board-button kanit-semibold"
     (click)="openBoardPopup()"
   ></button>
+
   <!-- PrimeNG Dialog ile Create Board Pop-up'ı -->
   <p-dialog
     header="Creating Board"
     [(visible)]="isBoardPopupOpen"
     [modal]="true"
     [closable]="false"
-    style="width: '450px'; height: '350px'"
     styleClass="centered-dialog"
   >
     <div class="p-text-center create-board-popup">
@@ -135,16 +177,6 @@
         [placeholder]="placeholderText"
         (focus)="clearPlaceholder()"
         (blur)="restorePlaceholder()"
-        style="
-          width: 101%;
-          padding: 10px;
-          border: 1px solid #00ff87;
-          border-radius: 5px;
-          background-color: #c4e1f6;
-          color: #243642;
-          text-align: center;
-          box-sizing: border-box;
-        "
       />
     </div>
     <!-- Başarı mesajı alanı -->
@@ -174,8 +206,8 @@
       ></button>
     </p-footer>
   </p-dialog>
+
   <div class="user-info-container">
-    <!-- Div yerine buton kullandım ve tabindex kaldırdım -->
     <button
       class="user-circle"
       (click)="openUserPopup()"
@@ -184,7 +216,6 @@
     >
       <span class="user-initials">{{ userInitials }}</span>
     </button>
-    <!-- Logout Button -->
     <div class="logout-container">
       <img src="assets/logouticon.png" alt="Logout Icon" class="logout-icon" />
       <button class="logout-button" (click)="logout()">Logout</button>
@@ -204,7 +235,6 @@
     <strong>{{ userJobTitle }}</strong>
   </p>
 
-  <!-- Statü Değiştirme İkonunu button yaptım -->
   <div class="status-container">
     <p>
       <strong>{{ userStatus }}</strong>
@@ -258,63 +288,6 @@
     </li>
   </ul>
 </div>
-
-<style>
-  .status-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .status-item {
-    display: flex;
-    align-items: center;
-    padding: 5px 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  .status-circle {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 8px;
-  }
-
-  .online-status {
-    color: #00ff87;
-  }
-  .online-status .status-circle {
-    background-color: #00ff87;
-  }
-  .online-status:hover {
-    background-color: #00ff87;
-    color: #16262c;
-  }
-
-  .away-status {
-    color: #ffdb58;
-  }
-  .away-status .status-circle {
-    background-color: #ffdb58;
-  }
-  .away-status:hover {
-    background-color: #ffdb58;
-    color: #16262c;
-  }
-
-  .busy-status {
-    color: #ff4136;
-  }
-  .busy-status .status-circle {
-    background-color: #ff4136;
-  }
-  .busy-status:hover {
-    background-color: #ff4136;
-    color: #16262c;
-  }
-</style>
 
 <div class="dashboard-container">
   <h1>Welcome to the Dashboard</h1>
