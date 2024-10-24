@@ -20,7 +20,7 @@
   .user-info-container {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Sağ üst köşeye taşıma */
+    margin-left: auto;
     gap: 10px;
 
     .user-circle {
@@ -51,7 +51,7 @@
     .logout-container {
       display: flex;
       align-items: center;
-      gap: 0.5px; /* İkon ile logout metni arasındaki boşluk */
+      gap: 0.5px;
 
       .logout-icon {
         width: 20px;
@@ -104,19 +104,19 @@
     p {
       margin-right: 10px;
       font-size: 14px;
-      color: #00ff87; /* Default olarak Online rengini ayarlıyoruz */
-      transition: color 0.3s ease; /* Renk geçişleri için smooth animasyon */
+      color: #00ff87;
+      transition: color 0.3s ease;
 
       &.online-status {
-        color: #00ff87; /* Online durumu için yeşil */
+        color: #00ff87;
       }
 
       &.busy-status {
-        color: #ff4136; /* Busy (Meşgul) durumu için kırmızı */
+        color: #ff4136;
       }
 
       &.away-status {
-        color: #ffdb58; /* Away (Uzakta) durumu için sarı */
+        color: #ffdb58;
       }
     }
 
@@ -126,18 +126,18 @@
       align-items: center;
       width: 25px;
       height: 25px;
-      border: 2px solid #00ff87; /* Yeşil çerçeve */
-      border-radius: 5px; /* Hafif yuvarlatılmış köşeler */
-      color: #00ff87; /* İkon rengi */
-      font-size: 20px; /* İkon boyutu */
+      border: 2px solid #00ff87;
+      border-radius: 5px;
+      color: #00ff87;
+      font-size: 20px;
       cursor: pointer;
       transition: color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
-      background: none; /* Arka plan kaldırıldı */
+      background: none;
 
       &:hover {
-        color: #7bd3ea; /* Hover'da ikon rengi değişimi */
-        border-color: #7bd3ea; /* Hover'da çerçeve rengi değişimi */
-        transform: scale(1.1); /* Hafif büyüme efekti */
+        color: #7bd3ea;
+        border-color: #7bd3ea;
+        transform: scale(1.1);
       }
     }
   }
@@ -162,7 +162,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      border: 2px solid; /* Duruma göre border rengi */
+      border: 2px solid;
       padding: 5px;
       border-radius: 8px;
       margin-bottom: 10px;
@@ -179,7 +179,7 @@
       .status-text {
         flex-grow: 1;
         text-align: center;
-        font-weight: bold; /* Yazıları belirginleştirir */
+        font-weight: bold;
       }
 
       &.online-status {
@@ -261,40 +261,22 @@
   color: #00ff87;
 
   .create-board-icon {
-    width: 80px !important; /* Daha yüksek özgüllük ve !important ile küçültme */
+    width: 80px !important;
     height: 80px !important;
     margin-bottom: 10px;
   }
 }
 
-.success-message {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: #00a65a !important;
-  font-weight: bold !important;
-  margin-top: 10px !important;
-  text-align: center !important;
-  opacity: 1;
-  transition: opacity 1s ease-out; /* 1 saniyelik yumuşak kaybolma efekti */
-
-  i {
-    font-size: 1.2em !important;
-    margin-right: 5px !important;
-  }
-
-  span {
-    font-size: 0.95em !important;
-  }
-}
-
+.success-message,
 .error-message {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  color: #ff4136 !important; /* Kırmızı renk */
   font-weight: bold !important;
   margin-top: 10px !important;
+  text-align: center !important;
+  opacity: 1;
+  transition: opacity 1s ease-out;
 
   i {
     font-size: 1.2em !important;
@@ -306,15 +288,127 @@
   }
 }
 
-.fade-out {
-  opacity: 0; /* Bu sınıf eklendiğinde mesaj yumuşakça kaybolur */
+.success-message {
+  color: #00a65a !important;
 }
 
-::ng-deep .centered-dialog .footer-buttons {
-  display: flex !important;
-  justify-content: center !important;
-  gap: 5px !important; /* Butonlar arasındaki boşluk */
-  padding-top: 10px !important;
+.error-message {
+  color: #ff4136 !important;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+::ng-deep .centered-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  max-width: 90%;
+  padding: 30px;
+  background-color: #243642;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 9999;
+
+  .p-dialog-title {
+    font-size: 28px;
+    color: #00ff87;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .p-field label {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+
+  input[pInputText] {
+    padding: 12px;
+    width: 100%;
+    border: 2px solid #00ff87;
+    border-radius: 8px;
+    background-color: #1f2e3a;
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  p-dropdown {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .footer-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    button {
+      font-size: 16px;
+      padding: 12px 25px;
+      border-radius: 8px;
+    }
+
+    .p-button-success {
+      background-color: #00ff87;
+      color: #16262c;
+      &:hover {
+        background-color: #7bd3ea;
+      }
+    }
+
+    .p-button-secondary {
+      background-color: #ff4136;
+      color: #ffffff;
+      &:hover {
+        background-color: #ff6f61;
+      }
+    }
+  }
+
+  .board-member-list {
+    margin-top: 20px;
+    width: 100%;
+
+    h4 {
+      color: #00ff87;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px;
+        border: 2px solid #00ff87;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #1f2e3a;
+        color: #ffffff;
+        font-size: 16px;
+
+        button {
+          background-color: transparent;
+          color: #ff4136;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            color: #ff6f61;
+          }
+        }
+      }
+    }
+  }
 }
 
 ::ng-deep .custom-hover {
@@ -326,61 +420,21 @@
   }
 }
 
-::ng-deep .centered-dialog .p-dialog-title {
-  text-align: center !important;
-  width: 100% !important;
-  justify-content: center;
-  display: flex !important;
-}
-
-::ng-deep .centered-dialog .footer-buttons {
-  display: flex !important;
-  justify-content: center !important;
-  gap: 5px; /* Butonlar arasındaki boşluk */
-  padding-top: 10px;
-}
-
-::ng-deep .custom-hover {
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #7bd3ea !important; /* Gök mavi renk */
-    color: #16262c !important; /* Metin rengi */
-  }
-}
-
-::ng-deep .centered-dialog .p-dialog-title {
-  text-align: center !important;
-  width: 100% !important;
-  justify-content: center;
-  display: flex;
-}
-
 ::ng-deep .p-dropdown-empty-message {
-  color: #ff073a; /* Kırmızı renk */
+  color: #ff073a;
   font-weight: bold;
-  font-size: 1rem; /* Yazıyı belirginleştirmek için */
+  font-size: 1rem;
 }
 
 .board-dropdown {
-  margin-left: 50px; /* İstediğiniz miktarda sağa kaydırma */
-  width: 300px; /* Genişliği korumak için */
-}
+  margin-left: 50px;
+  width: 300px;
 
-.new-board-button {
-  margin-right: auto; /* Butonu sola taşıyoruz */
-  background-color: #00ff87;
-  color: #16262c;
-}
-
-.board-dropdown {
-  width: 162px; /* İstediğiniz genişliği belirleyin */
-}
-
-.neon-red-border {
-  border: 3px solid #ff073a; /* Neon kırmızı renkte çerçeve */
-  box-shadow: 0 0 5px #ff073a; /* Neon efekt için hafif parıltı */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  &.neon-red-border {
+    border: 3px solid #ff073a;
+    box-shadow: 0 0 5px #ff073a;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
 }
 
 .kanit-semibold {
@@ -394,7 +448,8 @@
   padding: 5px;
 }
 
-.pi-trash:hover {
-  color: #ff4136; /* Hover sırasında ikon rengi */
-  transform: scale(1.2); /* İkonu hafif büyütme efekti */
+.pi-trash:hover,
+.pi-minus:hover,
+.pi-plus:hover {
+  transform: scale(1.2);
 }

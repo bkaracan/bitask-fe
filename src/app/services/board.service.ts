@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UpdateBoardRequestDTO } from '../models/update-board-request.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +31,14 @@ export class BoardService {
       Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
     });
     return this.http.delete(`${this.apiUrl}/deleteById?id=${id}`, { headers });
+  }
+
+  updateBoard(updateBoardRequestDTO: UpdateBoardRequestDTO): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+    });
+    return this.http.put(`${this.apiUrl}/update`, updateBoardRequestDTO, {
+      headers,
+    });
   }
 }
