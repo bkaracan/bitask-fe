@@ -1,15 +1,17 @@
 <div class="navbar">
   <img src="assets/bitaskicon.png" alt="BiTASK Icon" class="logo" />
   <span class="title">BiTASK</span>
-  <!-- Dropdown ile mevcut board listesi -->
-  <p-dropdown
+  
+  <!-- Dropdown ve Buton için bir kapsayıcı oluşturuldu -->
+  <div class="board-container">
+    <!-- Dropdown -->
+    <p-dropdown
     [(ngModel)]="selectedBoard"
     [options]="boards"
     optionLabel="name"
     placeholder="Select a board"
     emptyMessage="No board yet!"
     class="board-dropdown"
-    [ngClass]="{ 'neon-red-border': boards.length === 0 }"
     scrollHeight="200px"
   >
     <ng-template pTemplate="selectedItem">
@@ -22,126 +24,118 @@
         <span>{{ board.name }}</span>
         <div class="board-item-icons">
           <i
-            class="pi pi-sliders-h"
-            title="Settings"
+            class="pi pi-sliders-h edit-icon"
+            title="Edit"
             (click)="openBoardEditingPopup(board)"
-            (mouseenter)="onMouseEnter($event)"
-            (mouseleave)="onMouseLeave($event)"
           ></i>
           <i
-            class="pi pi-trash"
+            class="pi pi-trash delete-icon"
+            title="Delete"
             (click)="openDeletePopup(board.id)"
-            (keydown.enter)="openDeletePopup(board.id)"
-            (keydown.space)="openDeletePopup(board.id)"
-            title="Delete Board"
           ></i>
         </div>
       </div>
     </ng-template>
-  </p-dropdown>
+  </p-dropdown>  
+  </div>
 
-  <!-- Board Editing Popup -->
+
   <p-dialog
-    header="Board Editing Popup"
-    [(visible)]="isBoardEditingPopupOpen"
-    [modal]="true"
-    [closable]="false"
-    styleClass="centered-dialog"
-  >
-    <div class="p-text-center create-board-popup">
-      <div class="p-field">
-        <label for="editBoardName">Board Name:</label>
-        <input
-          pInputText
-          id="editBoardName"
-          [(ngModel)]="editedBoardName"
-          placeholder="Board name"
-        />
-      </div>
-
-      <!-- Add members dropdown -->
-      <label for="addMembers">Add members:</label>
+  header="Edit Board"
+  [(visible)]="isBoardEditingPopupOpen"
+  [modal]="true"
+  [closable]="false"
+  styleClass="edit-popup modern-popup"
+>
+  <div class="popup-content">
+    <div class="icon-container">
+      <i class="pi pi-pencil icon"></i>
+    </div>
+    <div class="form-container">
+      <label for="editBoardName" class="input-label">Board Name</label>
+      <input
+        pInputText
+        id="editBoardName"
+        [(ngModel)]="editedBoardName"
+        placeholder="Enter board name"
+        class="board-input"
+      />
+    </div>
+    <div class="form-container">
+      <label for="addMembers" class="input-label">Add Members</label>
       <p-dropdown
         [options]="availableUsers"
         [(ngModel)]="selectedUser"
         placeholder="Select a member"
         (onChange)="addMemberToBoard(selectedUser)"
-      >
-        <ng-template let-user pTemplate="selectedItem">
-          <div *ngIf="user">
-            {{ user.firstName || "N/A" }} {{ user.lastName || "N/A" }} -
-            {{ user.jobTitle?.name || "No Job Title" }}
-          </div>
-        </ng-template>
-
-        <ng-template let-user pTemplate="item">
-          <div *ngIf="user">
-            {{ user.firstName || "N/A" }} {{ user.lastName || "N/A" }} -
-            {{ user.jobTitle?.name || "No Job Title" }}
-          </div>
-        </ng-template>
-      </p-dropdown>
-
-      <!-- Existing members list preview -->
-      <div class="board-member-list">
-        <h4>Board Member List Preview</h4>
-        <ul>
-          <li *ngFor="let member of editedBoardMembers">
-            {{ member.name }}
-            <button (click)="removeMemberFromBoard(member)">Remove</button>
-          </li>
-        </ul>
-      </div>
+        class="dropdown-input"
+      ></p-dropdown>
     </div>
-
-    <p-footer class="footer-buttons">
+    <div class="member-list">
+      <h4>Board Members</h4>
+      <ul>
+        <li *ngFor="let member of editedBoardMembers">
+          {{ member.name }}
+          <button
+            class="remove-member-button"
+            (click)="removeMemberFromBoard(member)"
+          >
+            Remove
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="actions">
       <button
         pButton
-        label="CONFIRM"
+        label="Save Changes"
         icon="pi pi-check"
+        class="p-button-rounded p-button-success action-button"
         (click)="confirmBoardChanges()"
-        class="p-button-rounded p-button-success"
       ></button>
       <button
         pButton
-        label="CANCEL"
+        label="Cancel"
         icon="pi pi-times"
+        class="p-button-rounded p-button-secondary action-button"
         (click)="isBoardEditingPopupOpen = false"
-        class="p-button-rounded p-button-secondary"
       ></button>
-    </p-footer>
-  </p-dialog>
+    </div>
+  </div>
+</p-dialog>
 
   <!-- Silme Onay Pop-up'ı -->
   <p-dialog
-    header="Are you sure you want to delete this board?"
-    [(visible)]="isDeletePopupOpen"
-    [modal]="true"
-    [closable]="false"
-    styleClass="delete-dialog"
-  >
-    <div class="confirmation-content">
-      <div class="confirmation-buttons">
-        <button
-          pButton
-          label="YES"
-          class="p-button-success"
-          (click)="deleteBoard()"
-        ></button>
-        <button
-          pButton
-          label="NO"
-          class="p-button-danger"
-          (click)="cancelDelete()"
-        ></button>
-      </div>
-      <!-- Başarı mesajı alanı -->
-      <div *ngIf="isSuccessMessageVisible" class="success-message">
-        <i class="pi pi-check-circle"></i>
-        <span>The board has been deleted successfully!</span>
-      </div>
+  header="Delete Board"
+  [(visible)]="isDeletePopupOpen"
+  [modal]="true"
+  [closable]="false"
+  styleClass="delete-popup modern-popup"
+>
+  <div class="popup-content">
+    <div class="icon-container">
+      <i class="pi pi-trash icon"></i>
     </div>
-  </p-dialog>
+    <p class="message">Are you sure you want to delete this board?</p>
+    <div class="actions">
+      <button
+        pButton
+        label="Yes, Delete"
+        icon="pi pi-check"
+        class="p-button-rounded p-button-danger action-button"
+        (click)="deleteBoard()"
+      ></button>
+      <button
+        pButton
+        label="Cancel"
+        icon="pi pi-times"
+        class="p-button-rounded p-button-secondary action-button"
+        (click)="isDeletePopupOpen = false"
+      ></button>
+    </div>
+  </div>
+</p-dialog>
+
 
   <!-- PrimeNG Butonu ile Create a New Board-->
   <button
@@ -155,57 +149,44 @@
 
   <!-- PrimeNG Dialog ile Create Board Pop-up'ı -->
   <p-dialog
-    header="Creating Board"
-    [(visible)]="isBoardPopupOpen"
-    [modal]="true"
-    [closable]="false"
-    styleClass="centered-dialog"
-  >
-    <div class="p-text-center create-board-popup">
-      <img
-        src="assets/createboardicon.png"
-        alt="Create Board Icon"
-        class="create-board-icon"
-      />
+  header="Creating Board"
+  [(visible)]="isBoardPopupOpen"
+  [modal]="true"
+  [closable]="true"
+  styleClass="centered-dialog modern-popup"
+>
+  <div class="popup-content">
+    <div class="icon-container">
+      <i class="pi pi-plus icon"></i>
     </div>
-    <div class="p-field">
-      <label for="boardName"></label>
+    <div class="input-container">
+      <label for="boardName" class="input-label">Board Name</label>
       <input
         pInputText
         id="boardName"
         [(ngModel)]="newBoardName"
-        [placeholder]="placeholderText"
-        (focus)="clearPlaceholder()"
-        (blur)="restorePlaceholder()"
+        placeholder="Enter board name"
+        class="board-input"
       />
     </div>
-    <!-- Başarı mesajı alanı -->
-    <div *ngIf="isSuccessMessageVisible" class="success-message">
-      <i class="pi pi-check-circle"></i>
-      <span>The board has been created successfully!</span>
-    </div>
-    <!-- Hata mesajı alanı -->
-    <div *ngIf="isErrorMessageVisible" class="error-message">
-      <i class="pi pi-exclamation-circle"></i>
-      <span>{{ errorMessage }}</span>
-    </div>
-    <p-footer class="footer-buttons">
+    <div class="actions">
       <button
         pButton
-        label="CREATE"
+        label="Create"
         icon="pi pi-check"
+        class="p-button-rounded p-button-success action-button"
         (click)="createBoard()"
-        class="p-button-rounded p-button-success"
       ></button>
       <button
         pButton
-        label="CANCEL"
+        label="Cancel"
         icon="pi pi-times"
+        class="p-button-rounded p-button-danger action-button"
         (click)="isBoardPopupOpen = false"
-        class="p-button-rounded p-button-secondary"
       ></button>
-    </p-footer>
-  </p-dialog>
+    </div>
+  </div>
+</p-dialog>
 
   <div class="user-info-container">
     <button
@@ -253,34 +234,28 @@
 <!-- Status Popup -->
 <div class="status-popup" *ngIf="isStatusPopupOpen">
   <ul class="status-list">
-    <li>
+    <li class="status-item">
       <button
-        class="status-item online-status"
+        class="status-button online-status"
         (click)="onStatusSelect('ONLINE')"
-        (keydown.enter)="onStatusSelect('ONLINE')"
-        (keydown.space)="onStatusSelect('ONLINE')"
       >
         <span class="status-circle"></span>
         <span class="status-text">Online</span>
       </button>
     </li>
-    <li>
+    <li class="status-item">
       <button
-        class="status-item away-status"
+        class="status-button away-status"
         (click)="onStatusSelect('AWAY')"
-        (keydown.enter)="onStatusSelect('AWAY')"
-        (keydown.space)="onStatusSelect('AWAY')"
       >
         <span class="status-circle"></span>
         <span class="status-text">Away</span>
       </button>
     </li>
-    <li>
+    <li class="status-item">
       <button
-        class="status-item busy-status"
+        class="status-button busy-status"
         (click)="onStatusSelect('BUSY')"
-        (keydown.enter)="onStatusSelect('BUSY')"
-        (keydown.space)="onStatusSelect('BUSY')"
       >
         <span class="status-circle"></span>
         <span class="status-text">Busy</span>
@@ -288,6 +263,7 @@
     </li>
   </ul>
 </div>
+
 
 <div class="dashboard-container">
   <h1>Welcome to the Dashboard</h1>
