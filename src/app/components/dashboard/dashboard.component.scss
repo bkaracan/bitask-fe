@@ -273,7 +273,7 @@
     font-size: 24px;
     font-weight: bold;
     text-align: center;
-    color: #00ff87;
+    color: #333333 !important;
     background-color: #f5f5f5;
     padding: 20px;
     border-bottom: 1px solid #e0e0e0;
@@ -330,47 +330,65 @@
       }
     }
 
+    /* Üye Listesi Stili */
     .member-list {
       width: 100%;
-      h4 {
-        font-size: 18px;
-        color: #00ff87;
-        text-align: left;
-        margin-bottom: 10px;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px;
-          border: 1px solid #e0e0e0;
-          border-radius: 8px;
-          margin-bottom: 10px;
-          background-color: #f9f9f9;
-
-          .remove-member-button {
-            background-color: #ff4136;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 12px;
-            cursor: pointer;
-
-            &:hover {
-              background-color: #c12f2f;
-            }
-          }
-        }
-      }
     }
-
+    
+    .scrollable-members {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+    
+    .member-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+    }
+    
+    .member-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #007bff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    
+    .member-name {
+      flex-grow: 1;
+      font-size: 14px;
+      color: #333333;
+    }
+    
+    .remove-member-button {
+      background-color: #ff4136;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    
+    .remove-member-button:hover {
+      background-color: #c12f2f;
+    }
+    
     .actions {
       display: flex;
       justify-content: center;
@@ -628,10 +646,9 @@
   }
 }
 
-
-
 .pi-trash:hover,
 .pi-minus:hover,
 .pi-plus:hover {
   transform: scale(1.2);
 }
+

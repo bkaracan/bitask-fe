@@ -66,6 +66,7 @@
       <p-dropdown
         [options]="availableUsers"
         [(ngModel)]="selectedUser"
+        optionLabel="fullNameWithTitle"
         placeholder="Select a member"
         (onChange)="addMemberToBoard(selectedUser)"
         class="dropdown-input"
@@ -73,9 +74,12 @@
     </div>
     <div class="member-list">
       <h4>Board Members</h4>
-      <ul>
-        <li *ngFor="let member of editedBoardMembers">
-          {{ member.name }}
+      <ul class="scrollable-members">
+        <li *ngFor="let member of editedBoardMembers" class="member-item">
+          <div class="member-badge">
+            {{ getInitials(member.firstName, member.lastName) }}
+          </div>
+          <span class="member-name">{{ member.firstName }} {{ member.lastName }}</span>
           <button
             class="remove-member-button"
             (click)="removeMemberFromBoard(member)"
@@ -85,12 +89,14 @@
         </li>
       </ul>
     </div>
+    
     <div class="actions">
       <button
         pButton
         label="Save Changes"
         icon="pi pi-check"
         class="p-button-rounded p-button-success action-button"
+        style="color: black;"
         (click)="confirmBoardChanges()"
       ></button>
       <button
@@ -153,8 +159,12 @@
   [(visible)]="isBoardPopupOpen"
   [modal]="true"
   [closable]="true"
+  [draggable]="false"
   styleClass="centered-dialog modern-popup"
 >
+<ng-template pTemplate="header">
+  <span style="color: #333333; font-size: 24px; font-weight: bold;">Creating Board</span>
+</ng-template>
   <div class="popup-content">
     <div class="icon-container">
       <i class="pi pi-plus icon"></i>
@@ -175,6 +185,7 @@
         label="Create"
         icon="pi pi-check"
         class="p-button-rounded p-button-success action-button"
+        style="color: black;"
         (click)="createBoard()"
       ></button>
       <button
@@ -187,6 +198,7 @@
     </div>
   </div>
 </p-dialog>
+
 
   <div class="user-info-container">
     <button
