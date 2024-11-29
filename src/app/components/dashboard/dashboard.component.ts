@@ -5,9 +5,7 @@ import { UserDTO } from 'src/app/models/user.dto';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { BoardService } from 'src/app/services/board.service';
-import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
 import { UpdateBoardRequestDTO } from 'src/app/models/update-board-request.dto';
 
 @Component({
@@ -180,55 +178,39 @@ export class DashboardComponent {
   createBoard(): void {
     // Board ismi boş ise hata mesajı göster
     if (!this.newBoardName.trim()) {
-      this.isErrorMessageVisible = true;
-      this.errorMessage = 'Board name is required!';
-      setTimeout(() => {
-        this.isErrorMessageVisible = false;
-      }, 2000);
+      this.showError('Board name is required!');
       return;
     }
-
+  
+    // Board ismi uzunluğu kontrolü
     if (this.newBoardName.length > 16) {
-      this.isErrorMessageVisible = true;
-      this.errorMessage = '16 character limit exceeded!';
-      setTimeout(() => {
-        this.isErrorMessageVisible = false;
-      }, 2000); // Uyarı mesajını 2 saniye sonra gizle
+      this.showError('16 character limit exceeded!');
       return;
     }
-
+  
+    // Yeni board oluşturma isteği
     this.boardService.createBoard(this.newBoardName).subscribe(
       (response: any) => {
         if (response.success) {
-          // Başarı durumu
-          this.getBoardsFromBackend(); // Backend'den güncel board listesini alır
-          this.isSuccessMessageVisible = true;
-          this.isErrorMessageVisible = false;
-          this.newBoardName = ''; // Input alanını temizliyoruz
-          setTimeout(() => {
-            this.isSuccessMessageVisible = false;
-            this.isBoardPopupOpen = false; // Pop-up'ı kapatıyoruz
-          }, 1500);
+          // Başarı durumu: Board listesini güncelle
+          this.getBoardsFromBackend();
+          this.showSuccess('Board created successfully!');
+          this.newBoardName = ''; // Input alanını temizle
+          this.isBoardPopupOpen = false; // Pop-up'ı kapat
         } else {
-          // Başarısız durum, backend tarafından dönen hata mesajını göster
-          this.isErrorMessageVisible = true;
-          this.errorMessage =
-            response?.data?.error || 'The board already exists!';
-          setTimeout(() => {
-            this.isErrorMessageVisible = false;
-          }, 2000); // Hata mesajı 2 saniye sonra kaybolacak
+          // Backend'den dönen hata mesajını göster
+          const errorMessage = response?.message || 'The board already exists!';
+          this.showError(errorMessage);
         }
       },
       (error) => {
-        // Ağ veya sunucu hatası durumunda genel bir hata mesajı göster
-        this.isErrorMessageVisible = true;
-        this.errorMessage = 'An error occurred while creating the board!';
-        setTimeout(() => {
-          this.isErrorMessageVisible = false;
-        }, 2000); // Genel hata mesajı 2 saniye sonra kaybolacak
+        // Genel hata: Ağ veya sunucu hatası
+        this.showError('An error occurred while creating the board!');
+        console.error('Create board error:', error);
       }
     );
   }
+  
 
   onMouseEnter(event: MouseEvent): void {
     const target = event.target as HTMLElement;
@@ -369,16 +351,25 @@ export class DashboardComponent {
   openBoardEditingPopup(board: any): void {
     if (board) {
       this.editedBoardName = board.name;
-      this.editedBoardMembers = [...(board.members || [])]; // board.members varsa
+      this.editedBoardMembers = [...(board.members || [])];
       this.isBoardEditingPopupOpen = true;
-
+  
       // Kullanıcıları API'den çekiyoruz
       this.userService.getAllUsers().subscribe((response) => {
         if (response.success) {
-          this.availableUsers = response.data.filter(
-            (user: UserDTO) =>
-              !this.editedBoardMembers.some((member) => member.id === user.id) // Zaten eklenmiş olan üyeleri hariç tut
-          );
+          this.availableUsers = response.data
+            .filter(
+              (user: UserDTO) =>
+                !this.editedBoardMembers.some((member) => member.id === user.id)
+            )
+            .map((user: any) => ({
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              fullNameWithTitle: `${user.firstName} ${user.lastName} (${this.capitalizeTitle(
+                user.jobTitle?.name
+              )})`,
+            }));
         } else {
           console.error('Failed to fetch users:', response.message);
         }
@@ -387,20 +378,42 @@ export class DashboardComponent {
       console.error('Selected board is undefined or null');
     }
   }
+  
 
-  addMemberToBoard(user: any) {
-    if (!this.editedBoardMembers.includes(user)) {
-      this.editedBoardMembers.push(user);
-      this.availableUsers = this.availableUsers.filter((u) => u !== user); // Remove from dropdown
-    }
-  }
 
-  removeMemberFromBoard(member: any) {
-    this.editedBoardMembers = this.editedBoardMembers.filter(
-      (m) => m !== member
-    );
-    this.availableUsers.push(member); // Add back to dropdown
+  
+
+addMemberToBoard(user: any) {
+  if (!this.editedBoardMembers.some((member) => member.id === user.id)) {
+    this.editedBoardMembers.push({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
+    this.availableUsers = this.availableUsers.filter((u) => u.id !== user.id);
   }
+}
+
+
+
+
+
+  
+
+removeMemberFromBoard(member: any) {
+  this.editedBoardMembers = this.editedBoardMembers.filter(
+    (m) => m.id !== member.id
+  );
+  this.availableUsers.push({
+    id: member.id,
+    firstName: member.firstName,
+    lastName: member.lastName,
+    fullNameWithTitle: `${member.firstName} ${member.lastName} (${this.capitalizeTitle(
+      member.jobTitle?.name
+    )})`,
+  });
+}
+
 
   confirmBoardChanges(): void {
     const updateBoardRequestDTO: UpdateBoardRequestDTO = {
@@ -432,4 +445,49 @@ export class DashboardComponent {
         }
       });
   }
+
+  showError(message: string) {
+    this.isErrorMessageVisible = true;
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.isErrorMessageVisible = false;
+    }, 3000); // Mesaj 3 saniye sonra kaybolur
+  }
+
+  showSuccess(message: string) {
+    this.isSuccessMessageVisible = true;
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.isSuccessMessageVisible = false;
+    }, 2000); // Mesaj 2 saniye sonra kaybolur
+  }
+
+  capitalizeTitle(title: string): string {
+    if (!title) return 'No Title';
+    return title
+        .toLowerCase()
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }
+
+capitalizeWords(text: string): string {
+  if (!text) {
+    return ''; // Eğer text boş veya undefined ise boş string döndür
+  }
+  return text
+    .toLowerCase() // Önce tüm harfleri küçük yap
+    .split(' ') // Metni boşluklara göre ayır
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Her kelimenin ilk harfini büyük yap
+    .join(' '); // Kelimeleri tekrar birleştir
+}
+
+getInitials(firstName: string, lastName: string): string {
+  const firstInitial = firstName?.charAt(0).toUpperCase() || '';
+  const lastInitial = lastName?.charAt(0).toUpperCase() || '';
+  return `${firstInitial}${lastInitial}`;
+}
+  
+}
+
+
