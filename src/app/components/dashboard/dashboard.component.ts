@@ -383,16 +383,21 @@ export class DashboardComponent {
 
   
 
-addMemberToBoard(user: any) {
-  if (!this.editedBoardMembers.some((member) => member.id === user.id)) {
-    this.editedBoardMembers.push({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    });
-    this.availableUsers = this.availableUsers.filter((u) => u.id !== user.id);
+  addMemberToBoard(user: any) {
+    if (!this.editedBoardMembers.some((member) => member.id === user.id)) {
+      this.editedBoardMembers.push({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      });
+  
+      // Backend için eklenecek üyeleri listeye ekle
+      this.membersToAdd.push(user.id);
+  
+      // Dropdown listesinden kaldır
+      this.availableUsers = this.availableUsers.filter((u) => u.id !== user.id);
+    }
   }
-}
 
 
 
@@ -400,51 +405,61 @@ addMemberToBoard(user: any) {
 
   
 
-removeMemberFromBoard(member: any) {
-  this.editedBoardMembers = this.editedBoardMembers.filter(
-    (m) => m.id !== member.id
-  );
-  this.availableUsers.push({
-    id: member.id,
-    firstName: member.firstName,
-    lastName: member.lastName,
-    fullNameWithTitle: `${member.firstName} ${member.lastName} (${this.capitalizeTitle(
-      member.jobTitle?.name
-    )})`,
-  });
-}
+  removeMemberFromBoard(member: any) {
+    this.editedBoardMembers = this.editedBoardMembers.filter(
+      (m) => m.id !== member.id
+    );
+  
+    // Backend için çıkarılacak üyeleri listeye ekle
+    this.membersToRemove.push(member.id);
+  
+    // Kullanıcıyı dropdown'a geri ekle
+    this.availableUsers.push({
+      id: member.id,
+      firstName: member.firstName,
+      lastName: member.lastName,
+      fullNameWithTitle: `${member.firstName} ${member.lastName} (${this.capitalizeTitle(
+        member.jobTitle?.name
+      )})`,
+    });
+  }
 
 
   confirmBoardChanges(): void {
+    if (!this.editedBoardName.trim()) {
+      this.showError('Board name cannot be empty.');
+      return;
+    }
+  
+    if (!this.selectedBoard.id) {
+      this.showError('No board selected to update.');
+      return;
+    }
+  
     const updateBoardRequestDTO: UpdateBoardRequestDTO = {
-      id: this.selectedBoard.id, // Assuming you have a selected board
+      id: this.selectedBoard.id,
       name: this.editedBoardName,
-      membersToAdd: this.membersToAdd, // Since this is an array of numbers
-      membersToRemove: this.membersToRemove, // Since this is an array of numbers
+      membersToAdd: this.membersToAdd, // Doğru liste
+      membersToRemove: this.membersToRemove, // Doğru liste
     };
-
-    this.boardService
-      .updateBoard(updateBoardRequestDTO)
-      .subscribe((response) => {
+  
+    this.boardService.updateBoard(updateBoardRequestDTO).subscribe(
+      (response) => {
         if (response.success) {
-          // Güncellenen board'u bulup adını değiştir
-          const updatedBoardIndex = this.boards.findIndex(
-            (board) => board.id === this.selectedBoard.id
-          );
-          if (updatedBoardIndex !== -1) {
-            this.boards[updatedBoardIndex].name = this.editedBoardName; // Yeni board adını set ediyoruz
-          }
-
-          this.isSuccessMessageVisible = true;
-          setTimeout(() => {
-            this.isSuccessMessageVisible = false;
-            this.isBoardEditingPopupOpen = false;
-          }, 2000);
+          this.showSuccess('Board updated successfully!');
+          this.isBoardEditingPopupOpen = false;
+          this.getBoardsFromBackend();
         } else {
-          console.error('Failed to update the board');
+          this.showError('Failed to update the board.');
         }
-      });
+      },
+      (error) => {
+        this.showError('An error occurred while updating the board.');
+        console.error(error);
+      }
+    );
   }
+  
 
   showError(message: string) {
     this.isErrorMessageVisible = true;
